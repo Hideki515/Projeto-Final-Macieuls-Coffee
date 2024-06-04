@@ -1,0 +1,43 @@
+header {
+  padding-top: 8px;
+  background-color: #4A2C19;
+  height: 56px;
+  position: fixed;
+  z-index: 3 !important;
+  width: 100%;
+}
+main {
+  padding-top: 102px;
+  z-index: 1 !important;
+}
+#btn-confirmar {
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 16px !important;
+  border-radius: 42px;
+  height: 56px;
+  width: 56px;
+}
+.remover-todos-itens {
+  position: relative !important;
+  top: -46px !important;
+  right: 16px !important;
+  height: 24px !important;
+}
+#menu button.menu-item {
+  height: 92px;
+  width: 100px;
+  margin-top: -8px;
+  background-color: #643C21 !important;
+}
+.icon {
+  margin: 0px !important;
+}
+.menu-item .icon {
+  margin-bottom: 12px !important;
+}
+.image .label,
+.blurring,
+.dimmable {
+  z-index: 1 !important;
+}

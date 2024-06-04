@@ -7,16 +7,10 @@
   <title>Macieuls-Coffee</title>
 
   <!-- Icon no Title da Página -->
-  <link rel="shortcut icon" type="imagex/png" href="img/icon maciels coffe 2.png">
+  <link rel="shortcut icon" type="imagex/png" href="img/icons/icon maciels coffe 2.png">
 
-  <!--Link para o JQuery -->
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
-  <!--Link para o Semantic UI CSS e JavaScript -->
+  <!--Link para o framework Semantic UI CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-
-  <!--Link para o JavaScript personalizado -->
-  <script src="js/index.js"></script>
 
   <!-- Link css personalizado -->
   <link rel="stylesheet" href="css/style.css">
@@ -24,7 +18,288 @@
 
 <body>
 
+  <!-- Start Header -->
+  <header>
+    <div class="ui grid container" id="menu">
+      <div class="twelve wide column">
+        <!-- Botão para mostrar os bolos -->
+        <button class="ui brown button menu-item" data-tab-name="tab-bolos">
+          <i class="icon birthday cake large"></i><br />
+          Bolos
+        </button>
+        <!-- Botão para mostrar os cafés -->
+        <button class="ui brown button menu-item" data-tab-name="tab-cafes">
+          <i class="icon coffee large"></i><br />
+          Cafés
+        </button>
+      </div>
+      <!-- DropDown para o menu do CRUD -->
+      <div class="four wide column right">
+        <button class="ui brown button right floated ui dropdown" id="btn-edit"><i class="icon bars"></i>
+          <div class="text">Menu</div>
+          <!-- <i class="dropdown icon"></i> -->
+          <div class="menu">
+            <!-- Opção Adicionar Produto -->
+            <div class="item"><i class="icon plus"></i>Adicionar Produto</div>
+            <div class="item">
+              <span class="description">ctrl + s</span>
+              Save as...
+            </div>
+            <div class="item">
+              <span class="description">ctrl + r</span>
+              Rename
+            </div>
+            <div class="item">Make a copy</div>
+            <div class="item">
+              <i class="folder icon"></i>
+              Move to folder
+            </div>
+            <div class="item">
+              <i class="trash icon"></i>
+              Move to trash
+            </div>
+            <div class="divider"></div>
+            <div class="item">Download As...</div>
+            <div class="item">
+              <i class="dropdown icon"></i>
+              Publish To Web
+              <div class="menu">
+                <div class="item">Google Docs</div>
+                <div class="item">Google Drive</div>
+                <div class="item">Dropbox</div>
+                <div class="item">Adobe Creative Cloud</div>
+                <div class="item">Private FTP</div>
+                <div class="item">Another Service...</div>
+              </div>
+            </div>
+            <div class="item">E-mail Collaborators</div>
+          </div>
+        </button>
+      </div>
+    </div>
 
+    <!-- <div class="four wide column right"> -->
+
+    <!-- </div> -->
+
+
+    <button class="ui green button" id="btn-confirmar">
+      <i class="plus   icon"></i>
+    </button>
+  </header>
+  <!-- End Header -->
+
+  <main>
+    <div class="ui container">
+      <div class="ui tab" data-tab="tab-bolos">
+        <div class="ui four doubling stackable cards special" id="menu-bolos">
+
+        </div>
+      </div>
+
+      <div class="ui tab" data-tab="tab-cafes">
+        <div class="ui four doubling stackable cards special">
+          <div class="ui card fluid">
+            <div class="blurring dimmable image">
+              <div class="ui dimmer">
+                <div class="content">
+                  <div class="center">
+                    <div class="ui inverted button">Descrição do Café Expresso</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui top brown attached label">Café Expresso</div>
+              <div class="ui green bottom right attached label">R$ 6,80</div>
+              <img src="img/coffee/expresso.jpg">
+            </div>
+            <div class="extra content">
+              <div class="ui three buttons">
+                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                  <i class="minus icon"></i>
+                </div>
+                <div class="ui basic button quantidade" data-product="Café Expresso" data-price="6.80">0
+                </div>
+                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                  <i class="add icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui card fluid">
+            <div class="blurring dimmable image">
+              <div class="ui dimmer">
+                <div class="content">
+                  <div class="center">
+                    <div class="ui inverted button">Descrição do Cappuccino</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui top brown attached label">Cappuccino</div>
+              <div class="ui green bottom right attached label">R$ 12,82</div>
+              <img src="img/coffee/cappuccino.jpg">
+            </div>
+            <div class="extra content">
+              <div class="ui three buttons">
+                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                  <i class="minus icon"></i>
+                </div>
+                <div class="ui basic button quantidade" data-product="Cappuccino" data-price="12.82">0
+                </div>
+                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                  <i class="add icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui card fluid">
+            <div class="blurring dimmable image">
+              <div class="ui dimmer">
+                <div class="content">
+                  <div class="center">
+                    <div class="ui inverted button">Descrição do Moccacino</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui top brown attached label">Moccacino</div>
+              <div class="ui green bottom right attached label">R$ 9,21</div>
+              <img src="img/coffee/moccacino.jpg">
+            </div>
+            <div class="extra content">
+              <div class="ui three buttons">
+                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                  <i class="minus icon"></i>
+                </div>
+                <div class="ui basic button quantidade" data-product="Moccacino" data-price="9.21">0
+                </div>
+                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                  <i class="add icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui card fluid">
+            <div class="blurring dimmable image">
+              <div class="ui dimmer">
+                <div class="content">
+                  <div class="center">
+                    <div class="ui inverted button">Descrição do Cold Brew Coffee</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui top brown attached label">Cold Brew Coffee</div>
+              <div class="ui green bottom right attached label">R$ 13,39</div>
+              <img src="img/coffee/cold-brew-coffee.jpg">
+            </div>
+            <div class="extra content">
+              <div class="ui three buttons">
+                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                  <i class="minus icon"></i>
+                </div>
+                <div class="ui basic button quantidade" data-product="Cold Brew Coffee" data-price="13.39">0
+                </div>
+                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                  <i class="add icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Formulário para Cadastro do Produto -->
+  <div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Adicionar produto
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="field">
+          <!-- Campo do Nome do produto -->
+          <label>Nome:</label>
+          <input type="text" name="nome-produto" pattern="\d*" placeholder="Digite o nome do produto" 
+          id="nome-produto">
+          <br>
+          <br>
+          <!-- Campo descrição do produto -->
+          <label>Descrição:</label>
+          <input type="text" name="descricao-produto" pattern="\d*" placeholder="Digite a descrição do produto"
+            id="descricao-produto">
+          <br>
+          <br>
+          <!-- Campo preço do produto -->
+          <label>Preço:</label>
+            <div class="ui right labeled input">
+              <label for="amount" class="ui label">$</label>
+              <input type="text" name="preco-produto" pattern="\d*" placeholder="Digite o preço do produto" 
+              id="preco-produto">
+            </div>
+          <br>
+          <br>
+          <!-- Campo para selecionar a categoria do produto -->
+          <label>Categoria:</label>
+          <div class="ui fluid selection dropdown" id="drop-categoria">
+            <input type="hidden" name="user">
+            <i class="dropdown icon"></i>
+            <div class="default text">Selecione a categoria do produto</div>
+            <div class="menu">
+              <!-- Categoria 1 - Bolos -->
+              <div class="item" data-value="categoriaID1"><i class="icon icon birthday cake"></i>
+                Bolos
+              </div>
+              <!-- Categoria 2 - Bebidas -->
+              <div class="item" data-value="categoriaID2"><i class="icon coffee"></i>
+                Bebidas
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
+          <!-- Campo "Endereço da imagem" do produto -->
+          <label>Imagem:</label>
+          <input type="text" name="imagem-produto" pattern="\d*" placeholder="Digite o caminho da imagem"
+            id="imagem-produto">
+        </div>
+      </div>
+      <!-- <table class="ui unstackable table">
+        <thead>
+          <tr>
+            <th>
+              Produto
+            </th>
+            <th class="ui center aligned">Quantidade</th>
+            <th class="ui right aligned">Total</th>
+          </tr>
+        </thead>
+        <tbody id="resumo-pedido">
+
+        </tbody>
+      </table> -->
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">
+        Voltar
+      </div>
+      <div class="ui green right button" id="btn-adicionar">
+        Adicionar Produto
+      </div>
+    </div>
+  </div>
+  <!-- Fim Formulário Adicionar Produto -->
+
+  <!-- Script que chama o JQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+  <!-- Script que chama o JavaScript do Framework Semantic UI -->
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+  <!-- Script que chama o JavaScript personalizado -->
+  <script src="js/index.js"></script>
+
+  <!-- Script que chama a biblioteca SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 
