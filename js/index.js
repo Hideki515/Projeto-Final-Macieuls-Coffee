@@ -23,7 +23,8 @@ $(document).ready(function () {
         // Chama a função dropDown
         dropdown();
         // Chama a função que desabilita o botão caso os campos estejam vazios
-        disableButton();
+        btn();
+        // disableButton();
         // Chama a função de Adicionar Produtos
         adicionarProduto();
     }
@@ -233,30 +234,54 @@ function dropdown(){
     .dropdown();
 };
 
-// Função para esconder o botăo "Adicionar Produto"
-// function disableButton(){
-//     let nome_produto = $("#nome-produto").val();
-//     let descricao_produto = $("#descricao-produto").val();
-//     let preco_produto = $("#preco-produto").val();
-//     let categoria_produto = $('.ui.dropdown').dropdown('get text')[1].trim();
-//     let imagem_produto = $("#imagem-produto").val();
+// Função para desabilitar o botăo "Adicionar Produto" caso tenha campos obrigatorios vazios
+// $(document).ready(function() {
+//     // Chama a função disableButton inicialmente para verificar o estado dos campos ao carregar a página
+//     disableButton();
 
-//     $("#btn-adicionar").addClass("disabled button");
-    
-// };
+//     // Monitora os campos de input para mudanças em tempo real
+//     $("#nome-produto, #descricao-produto, #preco-produto").on('input', function() {
+//         disableButton();
+//     });
 
-$(document).ready(function() {
-    // Chama a função disableButton inicialmente para verificar o estado dos campos ao carregar a página
+//     // Monitora a mudança na dropdown
+//     $('.ui.dropdown').dropdown({
+//         onChange: function(value, text, $selectedItem) {
+//             disableButton();
+//         }
+//     });
+
+//     function disableButton() {
+//         let nome_produto = $("#nome-produto").val();
+//         let descricao_produto = $("#descricao-produto").val();
+//         let preco_produto = $("#preco-produto").val();
+//         // let categoria_produto = $('.ui.dropdown').dropdown('get text')[1].trim();
+
+//         let categoria_produto_selecionada = $('.ui.dropdown .item.selected'); 
+//         let categoria_produto = categoria_produto_selecionada.length > 0 ? categoria_produto_selecionada.text().trim() : '';
+
+//         if (!nome_produto || !descricao_produto || !preco_produto || !categoria_produto) {
+//             $("#btn-adicionar").toggleCla("disabled");
+//             // $("#btn-adicionar").addClass("disabled");
+//             // $("#btn-adicionar").hide();
+//         } else {
+//             $("#btn-adicionar").removeClass("disabled"); 
+//             // $("#btn-adicionar").show();
+//         };
+//     };
+// });
+
+function btn(){
     disableButton();
 
     // Monitora os campos de input para mudanças em tempo real
-    $("#nome-produto, #descricao-produto, #preco-produto").on('input', function() {
+    $("#nome-produto, #descricao-produto, #preco-produto").on('input', function () {
         disableButton();
     });
 
     // Monitora a mudança na dropdown
     $('.ui.dropdown').dropdown({
-        onChange: function(value, text, $selectedItem) {
+        onChange: function (value, text, $selectedItem) {
             disableButton();
         }
     });
@@ -265,16 +290,15 @@ $(document).ready(function() {
         let nome_produto = $("#nome-produto").val();
         let descricao_produto = $("#descricao-produto").val();
         let preco_produto = $("#preco-produto").val();
-        // let categoria_produto = $('.ui.dropdown').dropdown('get text')[1].trim();
-        let categoria_produto = categoria_produto_selecionada.length > 0 ? categoria_produto_selecionada.text().trim() : '';
+        let categoria_produto = $('.ui.dropdown').dropdown('get value');
 
         if (!nome_produto || !descricao_produto || !preco_produto || !categoria_produto) {
-            $("#btn-adicionar").addClass("disabled"); 
+            $("#btn-adicionar").hide();
         } else {
-            $("#btn-adicionar").removeClass("disabled"); 
+            $("#btn-adicionar").show();
         };
     };
-});
+};
 
 // Função para Adicionar Produto
 function adicionarProduto(){
@@ -297,6 +321,7 @@ function adicionarProduto(){
 
         console.log("ID da categoria selecionada",categoria_produto);
         
+        // Realiza a envio dos valores para a API
         $.ajax({
             url: ADD_PRODUTO,
             method: 'POST',
@@ -311,7 +336,7 @@ function adicionarProduto(){
             success: function (a, b, c) {
 
                 if (c.status === 201) {
-                    limparPedido();
+                    clearFieldsAdd();
                     $('.ui.modal').modal('hide');
                     Swal.fire({
                         title: "Uhulll",
@@ -335,4 +360,14 @@ function adicionarProduto(){
             }
         });
     });
-}
+};
+
+// Função para limpar os campos
+function clearFieldsAdd() {
+    function limparCampos() {
+        $("#nome-produto").val('');
+        $("#descricao-produto").val('');
+        $("#preco-produto").val('');
+        $('.ui.dropdown').dropdown('clear');
+    }
+};
