@@ -234,43 +234,6 @@ function dropdown() {
         .dropdown();
 };
 
-// Função para desabilitar o botăo "Adicionar Produto" caso tenha campos obrigatorios vazios
-// $(document).ready(function() {
-//     // Chama a função disableButton inicialmente para verificar o estado dos campos ao carregar a página
-//     disableButton();
-
-//     // Monitora os campos de input para mudanças em tempo real
-//     $("#nome-produto, #descricao-produto, #preco-produto").on('input', function() {
-//         disableButton();
-//     });
-
-//     // Monitora a mudança na dropdown
-//     $('.ui.dropdown').dropdown({
-//         onChange: function(value, text, $selectedItem) {
-//             disableButton();
-//         }
-//     });
-
-//     function disableButton() {
-//         let nome_produto = $("#nome-produto").val();
-//         let descricao_produto = $("#descricao-produto").val();
-//         let preco_produto = $("#preco-produto").val();
-//         // let categoria_produto = $('.ui.dropdown').dropdown('get text')[1].trim();
-
-//         let categoria_produto_selecionada = $('.ui.dropdown .item.selected'); 
-//         let categoria_produto = categoria_produto_selecionada.length > 0 ? categoria_produto_selecionada.text().trim() : '';
-
-//         if (!nome_produto || !descricao_produto || !preco_produto || !categoria_produto) {
-//             $("#btn-adicionar").toggleCla("disabled");
-//             // $("#btn-adicionar").addClass("disabled");
-//             // $("#btn-adicionar").hide();
-//         } else {
-//             $("#btn-adicionar").removeClass("disabled"); 
-//             // $("#btn-adicionar").show();
-//         };
-//     };
-// });
-
 function btn() {
     disableButton();
 
