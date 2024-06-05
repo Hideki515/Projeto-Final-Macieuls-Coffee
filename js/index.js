@@ -26,7 +26,7 @@ $(document).ready(function () {
         btn();
         // disableButton();
         // Chama a função de Adicionar Produtos
-        adicionarProduto();
+        // adicionarProduto();
     }
 
     function componentInit() {
@@ -76,11 +76,11 @@ $(document).ready(function () {
                     obj.quantidade = quantidade;
                     arrPedido.push(obj);
 
-                    conteudoResumo += `<tr>
-                              <td class="collapsing">${nomeProduto}</td>
-                              <td class="collapsing ui center aligned">${quantidade}</td>
-                              <td class="collapsing right">${us2brl(valorTotal)}</td>
-                          </tr>`;
+                    conteudoResumo += ` <tr>
+                                            <td class="collapsing">${nomeProduto}</td>
+                                            <td class="collapsing ui center aligned">${quantidade}</td>
+                                            <td class="collapsing right">${us2brl(valorTotal)}</td>
+                                        </tr>`;
                 }
             });
 
@@ -229,9 +229,9 @@ $(document).ready(function () {
 });
 
 // Função para o funcionamento do botão DropDown
-function dropdown(){
+function dropdown() {
     $('.ui.dropdown')
-    .dropdown();
+        .dropdown();
 };
 
 // Função para desabilitar o botăo "Adicionar Produto" caso tenha campos obrigatorios vazios
@@ -271,7 +271,7 @@ function dropdown(){
 //     };
 // });
 
-function btn(){
+function btn() {
     disableButton();
 
     // Monitora os campos de input para mudanças em tempo real
@@ -290,18 +290,22 @@ function btn(){
         let nome_produto = $("#nome-produto").val();
         let descricao_produto = $("#descricao-produto").val();
         let preco_produto = $("#preco-produto").val();
-        let categoria_produto = $('.ui.dropdown').dropdown('get value');
+        // let categoria_produto = $('.ui.dropdown').dropdown('get value');
 
-        if (!nome_produto || !descricao_produto || !preco_produto || !categoria_produto) {
-            $("#btn-adicionar").hide();
+        let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
+
+        console.log(categoria_selecionada);
+
+        if (!nome_produto || !descricao_produto || !preco_produto) {
+            $("#btn-adicionar").addClass("disabled");
         } else {
-            $("#btn-adicionar").show();
+            categoria_selecionada !== "Selecione a categoria do produto" ? $("#btn-adicionar").removeClass("disabled") : null;
         };
     };
 };
 
 // Função para Adicionar Produto
-function adicionarProduto(){
+function adicionarProduto() {
     $("#btn-adicionar").click(function () {
         let categoria_produto;
 
@@ -316,22 +320,22 @@ function adicionarProduto(){
             console.log("Categoria não reconhecida."); // Tratar outros casos conforme necessário
             return;
         }
-        
+
         console.log("Categoria selecionada:", categoria_selecionada);
 
-        console.log("ID da categoria selecionada",categoria_produto);
-        
+        console.log("ID da categoria selecionada", categoria_produto);
+
         // Realiza a envio dos valores para a API
         $.ajax({
             url: ADD_PRODUTO,
             method: 'POST',
             data: {
-                token: token,
+                token: '3e27138784ce6fa7dcc5c67971117739b2fadfc7',
                 nome: $('#nome-produto').val(),
                 descricao: $('#descricao-produto').val(),
                 idCategoria: $("#categoria_produto").text(),
                 preco: $('#preco-produto').val(),
-                foto: $('#imagem-produto').val()                
+                foto: $('#imagem-produto').val()
             },
             success: function (a, b, c) {
 
