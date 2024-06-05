@@ -23,10 +23,11 @@ $(document).ready(function () {
         // Chama a função dropDown
         dropdown();
         // Chama a função que desabilita o botão caso os campos estejam vazios
-        btn();
-        // disableButton();
+        verificarCamponsButton();
         // Chama a função de Adicionar Produtos
-        // adicionarProduto();
+        adicionarProduto();
+        // Chama a função para mascara de preço
+        maskPrice();
     }
 
     function componentInit() {
@@ -155,32 +156,32 @@ $(document).ready(function () {
         let conteudoMenu = '';
         $.getJSON(MENU_BOLOS, function (response) {
             response.forEach((item) => {
-                conteudoMenu += `<div class="ui card fluid">
-                                              <div class="ui top brown attached label">${item.nome}</div>
-                                              <div class="blurring dimmable image">
-                                                  <div class="ui dimmer">
-                                                      <div class="content">
-                                                          <div class="center">
-                                                              <div class="ui inverted button">${item.descricao}</div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                                  <div class="ui green bottom right attached label">${us2brl(item.preco)}</div>
-                                                  <img src="${item.foto}">
-                                              </div>
-                                              <div class="extra content">
-                                                  <div class="ui three buttons">
-                                                      <div class="ui icon button basic adicionar-remover-item" data-item="del">
-                                                          <i class="minus icon"></i>
-                                                      </div>
-                                                      <div class="ui basic button quantidade" data-name="${item.nome}" data-price="${item.preco}">0
-                                                      </div>
-                                                      <div class="ui icon button basic adicionar-remover-item" data-item="add">
-                                                          <i class="add icon"></i>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>`;
+                conteudoMenu += `   <div class="ui card fluid">
+                                        <div class="ui top brown attached label">${item.nome}</div>
+                                            <div class="blurring dimmable image">
+                                                <div class="ui dimmer">
+                                                    <div class="content">
+                                                        <div class="center">
+                                                            <div class="ui inverted button">${item.descricao}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ui green bottom right attached label">${us2brl(item.preco)}</div>
+                                                <img src="${item.foto}">
+                                            </div>
+                                            <div class="extra content">
+                                                <div class="ui three buttons">
+                                                    <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                                                        <i class="minus icon"></i>
+                                                    </div>
+                                                    <div class="ui basic button quantidade" data-name="${item.nome}" data-price="${item.preco}">0
+                                                    </div>
+                                                    <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                                                        <i class="add icon"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>`;
             });
             $('#menu-bolos').append(conteudoMenu);
 
@@ -234,7 +235,8 @@ function dropdown() {
         .dropdown();
 };
 
-function btn() {
+//Função para Desabilitar/Habilitar o botão "Adicionar Produto"
+function verificarCamponsButton() {
     disableButton();
 
     // Monitora os campos de input para mudanças em tempo real
@@ -265,6 +267,11 @@ function btn() {
             categoria_selecionada !== "Selecione a categoria do produto" ? $("#btn-adicionar").removeClass("disabled") : null;
         };
     };
+};
+
+// Função para Mascara do campo preço
+function maskPrice(){
+    $('#preco-produto').mask('000,00', {reverse: true});
 };
 
 // Função para Adicionar Produto
