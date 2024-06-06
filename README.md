@@ -60,7 +60,7 @@ A interface deve ser implementada utilizando algum framework CSS (Bootstrap, Mat
 **Endpoint:**
 
 ```
-https://www.fateclins.edu.br/felipeMaciel/macieulsCoffee/api/v2/produto
+https://cipaon.com.br/api/produto.php
 ```
 
 **Listar produtos:**
