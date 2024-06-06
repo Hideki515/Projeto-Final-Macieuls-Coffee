@@ -1,9 +1,9 @@
 $(document).ready(function () {
-    const MENU_BOLOS = 'https://www.fateclins.edu.br/felipeMaciel/macieulsCoffee/api/v2/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=1';
+    const MENU_BOLOS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=1';
 
-    const ADD_PEDIDO = 'https://www.fateclins.edu.br/felipeMaciel/macieulsCoffee/api/v2/pedido.php';
+    const ADD_PEDIDO = 'https://cipaon.com.br/api/produto.php';
 
-    const ADD_PRODUTO = 'https://www.fateclins.edu.br/felipeMaciel/macieulsCoffee/api/v2/pedido.php';
+    // const ADD_PRODUTO = 'https://cipaon.com.br/api/produto.php';
 
     let token = '3e27138784ce6fa7dcc5c67971117739b2fadfc7';
 
@@ -276,6 +276,8 @@ function maskPrice(){
 
 // Função para Adicionar Produto
 function adicionarProduto() {
+    const ADD_PRODUTO = 'https://cipaon.com.br/api/produto.php';
+
     $("#btn-adicionar").click(function () {
         let categoria_produto;
 
@@ -299,14 +301,14 @@ function adicionarProduto() {
         $.ajax({
             url: ADD_PRODUTO,
             method: 'POST',
-            data: {
+            data: JSON.stringify({
                 token: '3e27138784ce6fa7dcc5c67971117739b2fadfc7',
                 nome: $('#nome-produto').val(),
                 descricao: $('#descricao-produto').val(),
                 idCategoria: $("#categoria_produto").text(),
                 preco: $('#preco-produto').val(),
                 foto: $('#imagem-produto').val()
-            },
+            }),
             success: function (a, b, c) {
 
                 if (c.status === 201) {
