@@ -166,7 +166,7 @@ $(document).ready(function () {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="ui green bottom right attached label">${us2brl(item.preco)}</div>
+                                                <div class="ui green bottom right attached label">${(item.preco)}</div>
                                                 <img src="${item.foto}">
                                             </div>
                                             <div class="extra content">
@@ -280,6 +280,7 @@ function adicionarProduto() {
 
     $("#btn-adicionar").click(function () {
         let categoria_produto;
+        let descricao_produto;
 
         let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
 
@@ -297,18 +298,24 @@ function adicionarProduto() {
 
         console.log("ID da categoria selecionada", categoria_produto);
 
+        console.log("---------------------------------------------------------");
+        console.log("Nome produto: ",  $("#nome-produto").val());
+        console.log('Categoria:',  categoria_produto);
+        console.log("Preço:", $('#preco-produto').val());
+        console.log("Descrição:", $("#descricao-produto").val());
+        console.log("Imagem", $('#imagem-produto').val());
         // Realiza a envio dos valores para a API
         $.ajax({
             url: ADD_PRODUTO,
             method: 'POST',
-            data: JSON.stringify({
+            data: {
                 token: '3e27138784ce6fa7dcc5c67971117739b2fadfc7',
                 nome: $('#nome-produto').val(),
-                descricao: $('#descricao-produto').val(),
-                idCategoria: $("#categoria_produto").text(),
+                idCategoria: categoria_produto,
+                foto: $('#imagem-produto').val(),
                 preco: $('#preco-produto').val(),
-                foto: $('#imagem-produto').val()
-            }),
+                descricao: $('#descricao-produto').val()
+            },
             success: function (a, b, c) {
 
                 if (c.status === 201) {
