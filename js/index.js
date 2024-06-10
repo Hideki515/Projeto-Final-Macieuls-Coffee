@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     const ADD_PEDIDO = 'https://cipaon.com.br/api/produto.php';
 
-    // const ADD_PRODUTO = 'https://cipaon.com.br/api/produto.php';
+    const PRODUTO = 'https://cipaon.com.br/api/produto.php';
 
     let token = '3e27138784ce6fa7dcc5c67971117739b2fadfc7';
 
@@ -157,43 +157,48 @@ $(document).ready(function () {
         $('#menu-bolos').empty();
 
         let conteudoMenu = '';
+
         $.getJSON(MENU_BOLOS, function (response) {
-            response.forEach((item) => {
-                conteudoMenu += `   <div class="ui card">
-                                        <!-- Imagem do bolo -->
-                                        <div class="image">
-                                            <img src="${item.foto}">
-                                                <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
-                                                <div class="ui green bottom right attached label">
-                                                    R$ ${(item.preco)}
-                                                </div>
-                                                </div>
-                                                <div class="content">
-                                                    <!-- Coloca o nome produto em baixo da imagem -->
-                                                    <div class="header">
-                                                        ${item.nome}
-                                                    </div>
-                                                    <!-- Descrição da bedida -->
-                                                    <div class="description">
-                                                        ${item.descricao}
-                                                    </div>
-                                                </div>
-                                                <!-- Coloca os botôes de edit e delete -->
-                                                <div class="ui two bottom attached buttons">
-                                                    <!-- Botão delete -->
-                                                    <div class="ui inverted red button">
-                                                        <i class="trash alternate outline icon"></i>
-                                                        Delete
-                                                    </div>
-                                                    <!-- Botão edit -->
-                                                    <div class="ui inverted green button">
-                                                        <i class="edit outline icon"></i>
-                                                        Edit
-                                            </div>
-                                        </div>
-                                    </div>`;
+            response.forEach((produto) => {
+                conteudoMenu += `
+                    <div class="ui card" data-id="${produto.idProduto}">
+                        <!-- Imagem do bolo -->
+                        <div class="image">
+                            <img src="${produto.foto}">
+                            <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
+                            <div class="ui green bottom right attached label">
+                                R$ ${(produto.preco)}
+                            </div>
+                        </div>
+                        <div class="content">
+                            <!-- Coloca o nome produto em baixo da imagem -->
+                            <div class="header">
+                                ${produto.nome}
+                            </div>
+                            <!-- Descrição da bedida -->
+                            <div class="description">
+                                ${produto.descricao}
+                            </div>
+                        </div>
+                        <!-- Coloca os botôes de edit e delete -->
+                        <div class="ui two bottom attached buttons">
+                            <!-- Botão delete -->
+                            <div class="ui inverted red button delete-button">
+                                <i class="trash alternate outline icon"></i>
+                                Delete
+                            </div>
+                            <!-- Botão edit -->
+                            <div class="ui inverted green button">
+                                <i class="edit outline icon"></i>
+                                Edit
+                            </div>
+                        </div>
+                    </div>`;
             });
             $('#menu-bolos').append(conteudoMenu);
+
+            // Chama a função de deletar Produto
+            deleteProduto();
         });
 
         // $.ajax({
@@ -285,8 +290,6 @@ $(document).ready(function () {
 
     // Função para Adicionar Produto
     function adicionarProduto() {
-        const ADD_PRODUTO = 'https://cipaon.com.br/api/produto.php';
-
         $("#btn-adicionar").click(function () {
             let categoria_produto;
             let descricao_produto;
@@ -303,19 +306,19 @@ $(document).ready(function () {
                 return;
             }
 
-            console.log("Categoria selecionada:", categoria_selecionada);
+            // console.log("Categoria selecionada:", categoria_selecionada);
 
-            console.log("ID da categoria selecionada", categoria_produto);
+            // console.log("ID da categoria selecionada", categoria_produto);
 
-            console.log("---------------------------------------------------------");
-            console.log("Nome produto: ", $("#nome-produto").val());
-            console.log('Categoria:', categoria_produto);
-            console.log("Preço:", $('#preco-produto').val());
-            console.log("Descrição:", $("#descricao-produto").val());
-            console.log("Imagem", $('#imagem-produto').val());
+            // console.log("---------------------------------------------------------");
+            // console.log("Nome produto: ", $("#nome-produto").val());
+            // console.log('Categoria:', categoria_produto);
+            // console.log("Preço:", $('#preco-produto').val());
+            // console.log("Descrição:", $("#descricao-produto").val());
+            // console.log("Imagem", $('#imagem-produto').val());
             // Realiza a envio dos valores para a API
             $.ajax({
-                url: ADD_PRODUTO,
+                url: PRODUTO,
                 method: 'POST',
                 data: {
                     token: '3e27138784ce6fa7dcc5c67971117739b2fadfc7',
@@ -338,7 +341,7 @@ $(document).ready(function () {
                             icon: "success",
                             showConfirmButton: false,
                         });
-                    // Caso de erro 
+                        // Caso de erro 
                     } else {
                         Swal.fire({
                             title: "Erro!",
@@ -358,12 +361,58 @@ $(document).ready(function () {
 
     // Função para limpar os campos
     function clearFieldsAdd() {
-        function limparCampos() {
-            $("#nome-produto").val('');
-            $("#descricao-produto").val('');
-            $("#preco-produto").val('');
-            $('.ui.dropdown').dropdown('clear');
-        }
+        $("#nome-produto").val('');
+        $("#descricao-produto").val('');
+        $("#preco-produto").val('');
+        $('.ui.dropdown').dropdown('clear');
     };
+
+    function deleteProduto() {
+        $('.delete-button').click(function () {
+            let cardSelect = $(this).closest(".card");
+            let produtoId = cardSelect.data("id");
+
+            console.log(deleteProduto);
+            
+            console.log(produtoId);
+            
+            $.ajax({
+                url: PRODUTO,
+                method: 'DELETE',
+                data: {
+                    token: token,
+                    idProduto: produtoId
+                },
+                success: function (a, b, c) {
+                    // Caso de sucesso
+                    if (c.status === 200) {
+                        // Realiza ações de sucesso
+                        console.log('Produto excluído com sucesso!');
+                        // Exemplo de ação: recarrega o menu de bolos
+                        carregaMenuBolos();
+                        // Exemplo de uso do SweetAlert para mostrar uma mensagem de sucesso
+                        Swal.fire({
+                            title: "👍😁",
+                            text: "Produto excluído com sucesso!",
+                            timer: 3000,
+                            icon: "success",
+                            showConfirmButton: false,
+                        });
+                    } else {
+                        // Caso de erro
+                        console.error('Erro ao excluir produto:', c.statusText);
+                        // Exemplo de uso do SweetAlert para mostrar uma mensagem de erro
+                        Swal.fire({
+                            title: "Erro!",
+                            text: "Erro ao excluir produto!",
+                            timer: 3000,
+                            icon: "error",
+                            showConfirmButton: false,
+                        });
+                    }
+                }
+            });
+        });
+    }
 
 });
