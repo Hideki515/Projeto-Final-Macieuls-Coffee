@@ -18,7 +18,7 @@ $(document).ready(function () {
         addRemoveItem();
         limparPedido();
         limparPedidoBtn();
-        checkOrder();
+        // checkOrder();
         order();
         // Chama a função dropDown
         dropdown();
@@ -188,7 +188,7 @@ $(document).ready(function () {
                                 Delete
                             </div>
                             <!-- Botão edit -->
-                            <div class="ui inverted green button">
+                            <div class="ui inverted green button edit-button">
                                 <i class="edit outline icon"></i>
                                 Edit
                             </div>
@@ -199,6 +199,9 @@ $(document).ready(function () {
 
             // Chama a função de deletar Produto
             deleteProduto();
+
+            // Chama a função de editar Produto
+            editProduto();
         });
 
         // $.ajax({
@@ -290,6 +293,10 @@ $(document).ready(function () {
 
     // Função para Adicionar Produto
     function adicionarProduto() {
+        $('#btn-adicionarProduto').click(function () {
+            $('#form-addProduct').modal('show');
+        });
+
         $("#btn-adicionar").click(function () {
             let categoria_produto;
             let descricao_produto;
@@ -367,6 +374,7 @@ $(document).ready(function () {
         $('.ui.dropdown').dropdown('clear');
     };
 
+    // Função para deletar Produto
     function deleteProduto() {
         $('.delete-button').click(function () {
             let cardSelect = $(this).closest(".card");

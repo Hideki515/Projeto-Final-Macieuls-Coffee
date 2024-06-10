@@ -10,7 +10,7 @@ main {
   padding-top: 102px;
   z-index: 1 !important;
 }
-#btn-confirmar {
+#btn-adicionarProduto {
   position: fixed !important;
   right: 16px !important;
   bottom: 16px !important;
