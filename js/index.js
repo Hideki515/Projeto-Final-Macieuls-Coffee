@@ -434,7 +434,7 @@ $(document).ready(function () {
                 },
                 success: function (a, b, c) {
                     // Caso de sucesso fazer
-                    if (c.status === 200) {
+                    if (c.status === 204) {
                         clearFieldsAdd();
                         carregaMenuBolos();
                         $('.ui.modal').modal('hide');
