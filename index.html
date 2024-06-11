@@ -211,7 +211,7 @@
               <!-- Coloca o preço da bebida no canto direta da esqueda em baixo da imagem -->
               <div class="ui green bottom right attached label">
                 R$ 13,39
-              </div>  
+              </div>
             </div>
             <div class="content">
               <!-- Coloca o nome produto em baixo da imagem -->
@@ -220,7 +220,8 @@
               </div>
               <!-- Descrição da bedida -->
               <div class="description">
-                O Cold Brew é um método de preparo de extração do café a frio. Em outras palavras, é uma mistura de café com água fria, que é filtrada após uma infusão de, no mínimo, 12 horas.
+                O Cold Brew é um método de preparo de extração do café a frio. Em outras palavras, é uma mistura de café
+                com água fria, que é filtrada após uma infusão de, no mínimo, 12 horas.
               </div>
             </div>
             <!-- Coloca os botôes de edit e delete -->
@@ -272,23 +273,23 @@
           <br>
           <br>
           <!-- Campo para selecionar a categoria do produto -->
-          <label>Categoria:</label>
-          <div class="ui fluid selection dropdown" id="drop-categoria">
-            <input type="hidden" name="user">
-            <i class="dropdown icon"></i>
-            <div class="default text">Selecione a categoria do produto</div>
-            <div class="menu">
+          <div class="field">
+            <label>Categoria:</label>
+            <select class="ui dropdown" name="categoria-produto" id="categoria-produto">
+              <!-- Placeholder -->
+              <option value="" disabled selected hidden>
+                Selecione a categoria do produto
+              </option>
               <!-- Categoria 1 - Bolos -->
-              <div class="item" data-value="categoriaID1"><i class="icon icon birthday cake"></i>
-                Bolos
-              </div>
+              <option value="1">
+                Bolo
+              </option>
               <!-- Categoria 2 - Bebidas -->
-              <div class="item" data-value="categoriaID2"><i class="icon coffee"></i>
+              <option value="2">
                 Bebidas
-              </div>
-            </div>
+              </option>
+            </select>
           </div>
-          <br>
           <!-- Campo "Endereço da imagem" do produto -->
           <label>Imagem:</label>
           <input type="text" name="imagem-produto" pattern="\d*" placeholder="Digite o caminho da imagem"
@@ -296,7 +297,7 @@
         </div>
       </div>
     </div>
-      <!-- <table class="ui unstackable table">
+    <!-- <table class="ui unstackable table">
         <thead>
           <tr>
             <th>

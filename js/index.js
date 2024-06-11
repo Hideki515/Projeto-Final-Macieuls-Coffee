@@ -257,7 +257,7 @@ $(document).ready(function () {
         disableButton();
 
         // Monitora os campos de input para mudanças em tempo real
-        $("#nome-produto, #descricao-produto, #preco-produto").on('input', function () {
+        $("#nome-produto, #descricao-produto, #preco-produto", '#categoria-produto').on('input', function () {
             disableButton();
         });
 
@@ -274,14 +274,14 @@ $(document).ready(function () {
             let preco_produto = $("#preco-produto").val();
             // let categoria_produto = $('.ui.dropdown').dropdown('get value');
 
-            let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
+            let categoria_selecionada = $("#categoria-produto").val();
 
             console.log(categoria_selecionada);
 
-            if (!nome_produto || !descricao_produto || !preco_produto) {
+            if (!nome_produto || !descricao_produto || !preco_produto || !categoria_selecionada) {
                 $("#btn-adicionar").addClass("disabled");
             } else {
-                categoria_selecionada !== "Selecione a categoria do produto" ? $("#btn-adicionar").removeClass("disabled") : null;
+                $("#btn-adicionar").removeClass("disabled");
             };
         };
     };
@@ -304,25 +304,26 @@ $(document).ready(function () {
             let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
 
             // Mapeamento do texto da categoria para o ID da categoria
-            if (categoria_selecionada === "Bolos") {
-                categoria_produto = "1";
-            } else if (categoria_selecionada === "Bebidas") {
-                categoria_produto = "2";
-            } else {
-                console.log("Categoria não reconhecida."); // Tratar outros casos conforme necessário
-                return;
-            }
+            // if (categoria_selecionada === "Bolos") {
+            //     categoria_produto = "1";
+            // } else if (categoria_selecionada === "Bebidas") {
+            //     categoria_produto = "2";
+            // } else {
+            //     console.log("Categoria não reconhecida."); // Tratar outros casos conforme necessário
+            //     return;
+            // }
 
             // console.log("Categoria selecionada:", categoria_selecionada);
 
             // console.log("ID da categoria selecionada", categoria_produto);
 
-            // console.log("---------------------------------------------------------");
-            // console.log("Nome produto: ", $("#nome-produto").val());
-            // console.log('Categoria:', categoria_produto);
-            // console.log("Preço:", $('#preco-produto').val());
-            // console.log("Descrição:", $("#descricao-produto").val());
-            // console.log("Imagem", $('#imagem-produto').val());
+            console.log("---------------------------------------------------------");
+            console.log("Nome produto: ", $("#nome-produto").val());
+            console.log('Categoria:', $('#categoria-produto').val());
+            console.log("Preço:", $('#preco-produto').val());
+            console.log("Descrição:", $("#descricao-produto").val());
+            console.log("Imagem", $('#imagem-produto').val());
+            console.log("---------------------------------------------------------");
             // Realiza a envio dos valores para a API
             $.ajax({
                 url: PRODUTO,
@@ -330,7 +331,7 @@ $(document).ready(function () {
                 data: {
                     token: '3e27138784ce6fa7dcc5c67971117739b2fadfc7',
                     nome: $('#nome-produto').val(),
-                    idCategoria: categoria_produto,
+                    idCategoria: $('#categoria-produto').val(),
                     foto: $('#imagem-produto').val(),
                     preco: $('#preco-produto').val(),
                     descricao: $('#descricao-produto').val()
@@ -374,6 +375,18 @@ $(document).ready(function () {
         $('.ui.dropdown').dropdown('clear');
     };
 
+    // Função para editar Produto
+    function editProduto() {
+        $('.edit-button').click(function () {
+            $('#form-editProduct').modal('show');
+            
+
+            let cardSelect = $(this).closest(".card");
+            let produtoId = cardSelect.data("id");
+        });
+    }
+
+
     // Função para deletar Produto
     function deleteProduto() {
         $('.delete-button').click(function () {
@@ -381,9 +394,9 @@ $(document).ready(function () {
             let produtoId = cardSelect.data("id");
 
             console.log(deleteProduto);
-            
+
             console.log(produtoId);
-            
+
             $.ajax({
                 url: PRODUTO,
                 method: 'DELETE',
