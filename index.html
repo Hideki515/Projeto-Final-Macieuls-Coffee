@@ -321,6 +321,76 @@
     </div>
   </div>
   <!-- Fim Formulário Adicionar Produto -->
+  <!-- Formulário para Editar Produto -->
+  <div class="ui modal" id="form-editProduct">
+    <i class="close icon"></i>
+    <div class="header">
+      Editar produto
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="field">
+          <!-- Campo do Nome do produto -->
+          <label>idProduto:</label>
+          <input type="number" name="id-produto" pattern="\d*" placeholder=""
+            id="upID-produto" disabled>
+          <!-- Campo do Nome do produto -->
+          <label>Nome:</label>
+          <input type="text" name="nome-produto" pattern="\d*" placeholder="Digite o nome do produto"
+            id="upNome-produto">
+          <br>
+          <br>
+          <!-- Campo descrição do produto -->
+          <label>Descrição:</label>
+          <input type="text" name="descricao-produto" pattern="\d*" placeholder="Digite a descrição do produto"
+            id="upDescricao-produto">
+          <br>
+          <br>
+          <!-- Campo preço do produto -->
+          <label>Preço:</label>
+          <div class="ui right labeled input">
+            <label for="amount" class="ui label">R$</label>
+            <input type="text" name="preco-produto" pattern="\d*" placeholder="Digite o preço do produto"
+              id="upPreco-produto">
+          </div>
+          <br>
+          <br>
+          <!-- Campo para selecionar a categoria do produto -->
+          <div class="field">
+            <label>Categoria:</label>
+            <select class="ui dropdown" name="categoria-produto" id="upCategoria-produto">
+              <!-- Placeholder -->
+              <option value="" disabled selected hidden>
+                Selecione a categoria do produto
+              </option>
+              <!-- Categoria 1 - Bolos -->
+              <option value="1">
+                <i class="icon icon birthday cake"></i>
+                Bolo
+              </option>
+              <!-- Categoria 2 - Bebidas -->
+              <option value="2">
+                Bebidas
+              </option>
+            </select>
+          </div>
+          <!-- Campo "Endereço da imagem" do produto -->
+          <label>Imagem:</label>
+          <input type="text" name="imagem-produto" pattern="\d*" placeholder="Digite o caminho da imagem"
+            id="upImagem-produto">
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui red deny button" id="btn-cancelar">
+        Cancelar
+      </div>
+      <div class="ui green right button" id="button-edit">
+        Salvar Edição
+      </div>
+    </div>
+  </div>
+  <!-- Fim Formulário Edição Produto -->
 
   <!-- Script que chama o JQuery -->
   <script src="https://code.jquery.com/jquery-3.6.1.min.js"

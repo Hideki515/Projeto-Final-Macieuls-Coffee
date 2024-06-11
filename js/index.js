@@ -5,6 +5,8 @@ $(document).ready(function () {
 
     const PRODUTO = 'https://cipaon.com.br/api/produto.php';
 
+    const EDIT_PRODUTO = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7';
+
     let token = '3e27138784ce6fa7dcc5c67971117739b2fadfc7';
 
     let arrPedido = [];
@@ -161,22 +163,22 @@ $(document).ready(function () {
         $.getJSON(MENU_BOLOS, function (response) {
             response.forEach((produto) => {
                 conteudoMenu += `
-                    <div class="ui card" data-id="${produto.idProduto}">
+                    <div class="ui card" data-id="${produto.idProduto}" data-cat="${produto.idCategoria}">
                         <!-- Imagem do bolo -->
-                        <div class="image">
+                        <div class="image imagemProduto">
                             <img src="${produto.foto}">
                             <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
-                            <div class="ui green bottom right attached label">
+                            <div class="ui green bottom right attached label precoProduto">
                                 R$ ${(produto.preco)}
                             </div>
                         </div>
                         <div class="content">
                             <!-- Coloca o nome produto em baixo da imagem -->
-                            <div class="header">
+                            <div class="header nomeProduto">
                                 ${produto.nome}
                             </div>
                             <!-- Descrição da bedida -->
-                            <div class="description">
+                            <div class="description descricaoProduto">
                                 ${produto.descricao}
                             </div>
                         </div>
@@ -257,7 +259,7 @@ $(document).ready(function () {
         disableButton();
 
         // Monitora os campos de input para mudanças em tempo real
-        $("#nome-produto, #descricao-produto, #preco-produto", '#categoria-produto').on('input', function () {
+        $("#nome-produto, #descricao-produto, #preco-produto").on('input', function () {
             disableButton();
         });
 
@@ -375,14 +377,89 @@ $(document).ready(function () {
         $('.ui.dropdown').dropdown('clear');
     };
 
-    // Função para editar Produto
     function editProduto() {
         $('.edit-button').click(function () {
             $('#form-editProduct').modal('show');
-            
+            const cardSelect = $(this).closest(".card");
+            const produtoId = cardSelect.data("id");
+            const categoriaId = cardSelect.data("cat");
+            console.log(produtoId)
+            // Selecionando os campos correspondentes dentro do card
+            const nomeProduto = cardSelect.find('.nomeProduto').text().trim();
+            const descricaoProduto = cardSelect.find('.descricaoProduto').text().trim();
+            const precoProduto = parseFloat(cardSelect.find('.precoProduto').text().trim().replace('R$ ', '').replace(',', '.'));
+            const idCategoriaProduto = cardSelect.data('cat');
+            const imagemProduto = cardSelect.find('.imagemProduto img').attr('src');
 
-            let cardSelect = $(this).closest(".card");
-            let produtoId = cardSelect.data("id");
+            console.log(categoriaId);
+            console.log('-------------------------------');
+            console.log(idCategoriaProduto);
+            // Preenchendo os campos do formulário de edição
+
+            $('#upID-produto').val(produtoId);
+            $('#upNome-produto').val(nomeProduto);
+            $('#upDescricao-produto').val(descricaoProduto);
+            $('#upPreco-produto').val(precoProduto);
+            // Selecionando a opção correta no dropdown com base no idCategoriaProduto
+            $('#upCategoria-produto').dropdown('set selected', idCategoriaProduto);
+            $('#upImagem-produto').val(imagemProduto);
+        });
+
+        $('#button-edit').click(function () {
+            const cardSelect = $(this).closest(".card");
+            const produtoId = cardSelect.data("id");
+            console.log("Edit pressionado");
+            console.log(produtoId);
+
+            console.log($('#upNome-produto').val());
+            console.log($('#upCategoria-produto').val());
+            console.log($('#upImagem-produto').val());
+            console.log($('#upPreco-produto').val());
+            console.log($('#upDescricao-produto').val());
+
+            let produto = {
+                nome: $('#upNome-produto').val(),
+                idCategoria: $('#upCategoria-produto').val(),
+                foto: $('#upImagem-produto').val(),
+                preco: $('#upPreco-produto').val(),
+                descricao: $('#upDescricao-produto').val()
+            };
+
+            $.ajax({
+                url: EDIT_PRODUTO,
+                method: 'PUT',
+                data: {
+                    idProduto: $('#upID-produto').val(),
+                    produto: JSON.stringify(produto),
+                },
+                success: function (a, b, c) {
+                    // Caso de sucesso fazer
+                    if (c.status === 200) {
+                        clearFieldsAdd();
+                        carregaMenuBolos();
+                        $('.ui.modal').modal('hide');
+                        Swal.fire({
+                            title: "👍😁",
+                            text: "Produto editado com sucesso!",
+                            timer: 3000,
+                            icon: "success",
+                            showConfirmButton: false,
+                        });
+                        // Caso de erro 
+                    } else {
+                        Swal.fire({
+                            title: "Erro!",
+                            text: "Não foi possível editar Produto!",
+                            timer: 3000,
+                            icon: "error",
+                            showConfirmButton: false,
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error('Erro:', error);
+                }
+            });
         });
     }
 
@@ -393,20 +470,17 @@ $(document).ready(function () {
             let cardSelect = $(this).closest(".card");
             let produtoId = cardSelect.data("id");
 
+            let deleteProduto = PRODUTO + '?token=' + token + '&idProduto=' + produtoId;
             console.log(deleteProduto);
 
             console.log(produtoId);
 
             $.ajax({
-                url: PRODUTO,
+                url: deleteProduto,
                 method: 'DELETE',
-                data: {
-                    token: token,
-                    idProduto: produtoId
-                },
                 success: function (a, b, c) {
                     // Caso de sucesso
-                    if (c.status === 200) {
+                    if (c.status === 204) {
                         // Realiza ações de sucesso
                         console.log('Produto excluído com sucesso!');
                         // Exemplo de ação: recarrega o menu de bolos
