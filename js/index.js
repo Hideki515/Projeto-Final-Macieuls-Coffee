@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    const MENU_ALL = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7';
+
     const MENU_BOLOS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=1';
 
     const MENU_BEBIDAS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=2';
@@ -18,8 +20,9 @@ $(document).ready(function () {
     // Chama as funções necessárias para o funcionamento do programa
     function init() {
         componentInit();
+        carregaMenuAll();
         carregaMenuBolos();
-        // carregaMenuBebidas();
+        carregaMenuCafes();
         addRemoveItem();
         limparPedido();
         limparPedidoBtn();
@@ -37,7 +40,7 @@ $(document).ready(function () {
 
     function componentInit() {
         $.tab();
-        $.tab('change tab', 'tab-bolos');
+        $.tab('change tab', 'tab-all');
         $('#menu .menu-item').click(function () {
             let abaAtiva = $(this).attr('data-tab-name');
             $.tab('change tab', abaAtiva);
@@ -157,17 +160,77 @@ $(document).ready(function () {
         });
     }
 
+    function carregaMenuAll() {
+        // Limpa o conteúdo atual do menu de bebidas
+        $('#menu-all').empty();
+
+        let conteudoMenu = '';
+
+        $.getJSON(MENU_ALL, function (response) {
+            // Ordena o array de produtos por nome em ordem alfabética
+            response.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            response.forEach((produto) => {
+                conteudoMenu += `
+                    <div class="ui card" data-id="${produto.idProduto}" data-cat="${produto.idCategoria}">
+                        <!-- Imagem do produto -->
+                        <div class="image imagemProduto">
+                            <img src="${produto.foto}">
+                            <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
+                            <div class="ui green bottom right attached label precoProduto">
+                                R$ ${(produto.preco)}
+                            </div>
+                        </div>
+                        <div class="content">
+                            <!-- Coloca o nome produto em baixo da imagem -->
+                            <div class="header nomeProduto">
+                                ${produto.nome}
+                            </div>
+                            <!-- Descrição da bedida -->
+                            <div class="description descricaoProduto">
+                                ${produto.descricao}
+                            </div>
+                        </div>
+                        <!-- Coloca os botôes de edit e delete -->
+                        <div class="ui two bottom attached buttons">
+                            <!-- Botão delete -->
+                            <div class="ui inverted red button delete-button">
+                                <i class="trash alternate outline icon"></i>
+                                Delete
+                            </div>
+                            <!-- Botão edit -->
+                            <div class="ui inverted green button edit-button">
+                                <i class="edit outline icon"></i>
+                                Edit
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            $('#menu-all').append(conteudoMenu);
+
+            // Chama a função de deletar Produto
+            deleteProduto();
+
+            // Chama a função de editar Produto
+            editProduto();
+        });
+    }
+
     function carregaMenuBolos() {
         // Limpa o conteúdo atual do menu de bolos
         $('#menu-bolos').empty();
 
         let conteudoMenu = '';
 
-        $.getJSON(MENU_BEBIDAS, function (response) {
-            // Ordena o array de produtos por nome em ordem alfabética
-            response.sort((a, b) => a.nome.localeCompare(b.nome));
+        $.getJSON(MENU_BOLOS, function (response) {
+            // Filtra apenas os produtos com idCategoria igual a 1
+            const produtosBolos = response.filter(bolo => bolo.idCategoria === "1");
 
-            response.forEach((bolo) => {
+            // Ordena os produtos em ordem alfabética pelo nome
+            produtosBolos.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { caseFirst: 'upper' }));
+
+            // Itera sobre cada produto de bolo
+            produtosBolos.forEach((bolo) => {
                 conteudoMenu += `
                     <div class="ui card" data-id="${bolo.idProduto}" data-cat="${bolo.idCategoria}">
                         <!-- Imagem do bolo -->
@@ -253,35 +316,39 @@ $(document).ready(function () {
         // });
     }
 
-    function carregaMenuBebidas() {
+    function carregaMenuCafes() {
         // Limpa o conteúdo atual do menu de bebidas
-        $('#menu-bebida').empty();
+        $('#menu-cafes').empty();
 
         let conteudoMenu = '';
 
         $.getJSON(MENU_BOLOS, function (response) {
-            // Ordena o array de produtos por nome em ordem alfabética
-            response.sort((a, b) => a.nome.localeCompare(b.nome));
+            // Filtra apenas os produtos com idCategoria igual a 2
+            const produtosCafes = response.filter(cafe => cafe.idCategoria === "2");
 
-            response.forEach((bebida) => {
+            // Ordena os produtos em ordem alfabética pelo nome
+            produtosCafes.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { caseFirst: 'upper' }));
+
+            // Itera sobre cada produto de café
+            produtosCafes.forEach((cafe) => {
                 conteudoMenu += `
-                    <div class="ui card" data-id="${bebida.idProduto}" data-cat="${bebida.idCategoria}">
-                        <!-- Imagem do bebida -->
+                    <div class="ui card" data-id="${cafe.idProduto}" data-cat="${cafe.idCategoria}">
+                        <!-- Imagem do cafe -->
                         <div class="image imagemProduto">
-                            <img src="${bebida.foto}">
+                            <img src="${cafe.foto}">
                             <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
                             <div class="ui green bottom right attached label precoProduto">
-                                R$ ${(bebida.preco)}
+                                R$ ${(cafe.preco)}
                             </div>
                         </div>
                         <div class="content">
-                            <!-- Coloca o nome bebida em baixo da imagem -->
+                            <!-- Coloca o nome cafe em baixo da imagem -->
                             <div class="header nomeProduto">
-                                ${bebida.nome}
+                                ${cafe.nome}
                             </div>
                             <!-- Descrição da bedida -->
                             <div class="description descricaoProduto">
-                                ${bebida.descricao}
+                                ${cafe.descricao}
                             </div>
                         </div>
                         <!-- Coloca os botôes de edit e delete -->
@@ -299,7 +366,7 @@ $(document).ready(function () {
                         </div>
                     </div>`;
             });
-            $('#menu-bolos').append(conteudoMenu);
+            $('#menu-cafes').append(conteudoMenu);
 
             // Chama a função de deletar Produto
             deleteProduto();
@@ -362,10 +429,10 @@ $(document).ready(function () {
         });
 
         $("#btn-adicionar").click(function () {
-            let categoria_produto;
-            let descricao_produto;
+            // let categoria_produto;
+            // let descricao_produto;
 
-            let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
+            // let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
 
             // Mapeamento do texto da categoria para o ID da categoria
             // if (categoria_selecionada === "Bolos") {
@@ -380,6 +447,12 @@ $(document).ready(function () {
             // console.log("Categoria selecionada:", categoria_selecionada);
 
             // console.log("ID da categoria selecionada", categoria_produto);
+
+            let urlVazio = $("#imagem-produto").val();
+
+            if (!urlVazio) {
+                $('#imagem-produto').val('https://www.malhariapradense.com.br/wp-content/uploads/2017/08/produto-sem-imagem.png')
+            }
 
             console.log("---------------------------------------------------------");
             console.log("Nome produto: ", $("#nome-produto").val());
@@ -405,6 +478,8 @@ $(document).ready(function () {
                     if (c.status === 201) {
                         clearFieldsAdd();
                         carregaMenuBolos();
+                        carregaMenuAll();
+                        carregaMenuCafes();
                         $('.ui.modal').modal('hide');
                         Swal.fire({
                             title: "👍😁",
@@ -499,6 +574,8 @@ $(document).ready(function () {
                     if (c.status === 204) {
                         clearFieldsAdd();
                         carregaMenuBolos();
+                        carregaMenuAll();
+                        carregaMenuCafes();
                         $('.ui.modal').modal('hide');
                         Swal.fire({
                             title: "👍😁",
@@ -556,8 +633,9 @@ $(document).ready(function () {
                             if (c.status === 204) {
                                 // Realiza ações de sucesso
                                 console.log('Produto excluído com sucesso!');
-                                // Exemplo de ação: recarrega o menu de bolos
                                 carregaMenuBolos();
+                                carregaMenuAll();
+                                carregaMenuCafes();
                                 // Exemplo de uso do SweetAlert para mostrar uma mensagem de sucesso
                                 Swal.fire({
                                     title: "👍😁",

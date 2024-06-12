@@ -22,6 +22,11 @@
   <header>
     <div class="ui grid container" id="menu">
       <div class="twelve wide column">
+        <!-- Botão para mostrar todos os Produtos -->
+        <button class="ui brown button menu-item" data-tab-name="tab-all">
+          <i class="icon boxes large"></i><br />
+          Todos
+        </button>
         <!-- Botão para mostrar os bolos -->
         <button class="ui brown button menu-item" data-tab-name="tab-bolos">
           <i class="icon birthday cake large"></i><br />
@@ -91,6 +96,12 @@
 
   <main>
     <div class="ui container">
+      <div class="ui tab" data-tab="tab-all">
+        <div class="ui four doubling stackable cards special" id="menu-all">
+
+        </div>
+      </div>
+
       <div class="ui tab" data-tab="tab-bolos">
         <div class="ui four doubling stackable cards special" id="menu-bolos">
 
@@ -98,7 +109,7 @@
       </div>
 
       <div class="ui tab" data-tab="tab-cafes">
-        <div class="ui four doubling stackable cards special">
+        <div class="ui four doubling stackable cards special" id="menu-cafes">
 
         </div>
       </div>
