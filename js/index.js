@@ -1,6 +1,8 @@
 $(document).ready(function () {
     const MENU_BOLOS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=1';
 
+    const MENU_BEBIDAS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=2';
+
     const ADD_PEDIDO = 'https://cipaon.com.br/api/produto.php';
 
     const PRODUTO = 'https://cipaon.com.br/api/produto.php';
@@ -17,6 +19,7 @@ $(document).ready(function () {
     function init() {
         componentInit();
         carregaMenuBolos();
+        // carregaMenuBebidas();
         addRemoveItem();
         limparPedido();
         limparPedidoBtn();
@@ -160,26 +163,29 @@ $(document).ready(function () {
 
         let conteudoMenu = '';
 
-        $.getJSON(MENU_BOLOS, function (response) {
-            response.forEach((produto) => {
+        $.getJSON(MENU_BEBIDAS, function (response) {
+            // Ordena o array de produtos por nome em ordem alfabética
+            response.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            response.forEach((bolo) => {
                 conteudoMenu += `
-                    <div class="ui card" data-id="${produto.idProduto}" data-cat="${produto.idCategoria}">
+                    <div class="ui card" data-id="${bolo.idProduto}" data-cat="${bolo.idCategoria}">
                         <!-- Imagem do bolo -->
                         <div class="image imagemProduto">
-                            <img src="${produto.foto}">
+                            <img src="${bolo.foto}">
                             <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
                             <div class="ui green bottom right attached label precoProduto">
-                                R$ ${(produto.preco)}
+                                R$ ${(bolo.preco)}
                             </div>
                         </div>
                         <div class="content">
-                            <!-- Coloca o nome produto em baixo da imagem -->
+                            <!-- Coloca o nome bolo em baixo da imagem -->
                             <div class="header nomeProduto">
-                                ${produto.nome}
+                                ${bolo.nome}
                             </div>
                             <!-- Descrição da bedida -->
                             <div class="description descricaoProduto">
-                                ${produto.descricao}
+                                ${bolo.descricao}
                             </div>
                         </div>
                         <!-- Coloca os botôes de edit e delete -->
@@ -245,6 +251,62 @@ $(document).ready(function () {
         //         console.log(error);
         //     }
         // });
+    }
+
+    function carregaMenuBebidas() {
+        // Limpa o conteúdo atual do menu de bebidas
+        $('#menu-bebida').empty();
+
+        let conteudoMenu = '';
+
+        $.getJSON(MENU_BOLOS, function (response) {
+            // Ordena o array de produtos por nome em ordem alfabética
+            response.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            response.forEach((bebida) => {
+                conteudoMenu += `
+                    <div class="ui card" data-id="${bebida.idProduto}" data-cat="${bebida.idCategoria}">
+                        <!-- Imagem do bebida -->
+                        <div class="image imagemProduto">
+                            <img src="${bebida.foto}">
+                            <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
+                            <div class="ui green bottom right attached label precoProduto">
+                                R$ ${(bebida.preco)}
+                            </div>
+                        </div>
+                        <div class="content">
+                            <!-- Coloca o nome bebida em baixo da imagem -->
+                            <div class="header nomeProduto">
+                                ${bebida.nome}
+                            </div>
+                            <!-- Descrição da bedida -->
+                            <div class="description descricaoProduto">
+                                ${bebida.descricao}
+                            </div>
+                        </div>
+                        <!-- Coloca os botôes de edit e delete -->
+                        <div class="ui two bottom attached buttons">
+                            <!-- Botão delete -->
+                            <div class="ui inverted red button delete-button">
+                                <i class="trash alternate outline icon"></i>
+                                Delete
+                            </div>
+                            <!-- Botão edit -->
+                            <div class="ui inverted green button edit-button">
+                                <i class="edit outline icon"></i>
+                                Edit
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            $('#menu-bolos').append(conteudoMenu);
+
+            // Chama a função de deletar Produto
+            deleteProduto();
+
+            // Chama a função de editar Produto
+            editProduto();
+        });
     }
 
 
@@ -475,36 +537,49 @@ $(document).ready(function () {
 
             console.log(produtoId);
 
-            $.ajax({
-                url: deleteProduto,
-                method: 'DELETE',
-                success: function (a, b, c) {
-                    // Caso de sucesso
-                    if (c.status === 204) {
-                        // Realiza ações de sucesso
-                        console.log('Produto excluído com sucesso!');
-                        // Exemplo de ação: recarrega o menu de bolos
-                        carregaMenuBolos();
-                        // Exemplo de uso do SweetAlert para mostrar uma mensagem de sucesso
-                        Swal.fire({
-                            title: "👍😁",
-                            text: "Produto excluído com sucesso!",
-                            timer: 3000,
-                            icon: "success",
-                            showConfirmButton: false,
-                        });
-                    } else {
-                        // Caso de erro
-                        console.error('Erro ao excluir produto:', c.statusText);
-                        // Exemplo de uso do SweetAlert para mostrar uma mensagem de erro
-                        Swal.fire({
-                            title: "Erro!",
-                            text: "Erro ao excluir produto!",
-                            timer: 3000,
-                            icon: "error",
-                            showConfirmButton: false,
-                        });
-                    }
+            Swal.fire({
+                title: "Tem certeza?",
+                text: "Você não poderá reverter isso!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sim, exclua-o!",
+                cancelButtonText: "Cancelar!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: deleteProduto,
+                        method: 'DELETE',
+                        success: function (a, b, c) {
+                            // Caso de sucesso
+                            if (c.status === 204) {
+                                // Realiza ações de sucesso
+                                console.log('Produto excluído com sucesso!');
+                                // Exemplo de ação: recarrega o menu de bolos
+                                carregaMenuBolos();
+                                // Exemplo de uso do SweetAlert para mostrar uma mensagem de sucesso
+                                Swal.fire({
+                                    title: "👍😁",
+                                    text: "Produto excluído com sucesso!",
+                                    timer: 3000,
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                });
+                            } else {
+                                // Caso de erro
+                                console.error('Erro ao excluir produto:', c.statusText);
+                                // Exemplo de uso do SweetAlert para mostrar uma mensagem de erro
+                                Swal.fire({
+                                    title: "Erro!",
+                                    text: "Erro ao excluir produto!",
+                                    timer: 3000,
+                                    icon: "error",
+                                    showConfirmButton: false,
+                                });
+                            }
+                        }
+                    });
                 }
             });
         });

@@ -99,150 +99,11 @@
 
       <div class="ui tab" data-tab="tab-cafes">
         <div class="ui four doubling stackable cards special">
-          <div class="ui card fluid">
-            <div class="blurring dimmable image">
-              <div class="ui dimmer">
-                <div class="content">
-                  <div class="center">
-                    <div class="ui inverted button">Descrição do Café Expresso</div>
-                  </div>
-                </div>
-              </div>
-              <div class="ui top brown attached label">Café Expresso</div>
-              <div class="ui green bottom right attached label">R$ 6,80</div>
-              <img src="img/coffee/expresso.jpg">
-            </div>
-            <div class="extra content">
-              <div class="ui three buttons">
-                <div class="ui icon button basic adicionar-remover-item" data-item="del">
-                  <i class="minus icon"></i>
-                </div>
-                <div class="ui basic button quantidade" data-product="Café Expresso" data-price="6.80">0
-                </div>
-                <div class="ui icon button basic adicionar-remover-item" data-item="add">
-                  <i class="add icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ui card fluid">
-            <div class="blurring dimmable image">
-              <div class="ui dimmer">
-                <div class="content">
-                  <div class="center">
-                    <div class="ui inverted button">Descrição do Cappuccino</div>
-                  </div>
-                </div>
-              </div>
-              <div class="ui top brown attached label">Cappuccino</div>
-              <div class="ui green bottom right attached label">R$ 12,82</div>
-              <img src="img/coffee/cappuccino.jpg">
-            </div>
-            <div class="extra content">
-              <div class="ui three buttons">
-                <div class="ui icon button basic adicionar-remover-item" data-item="del">
-                  <i class="minus icon"></i>
-                </div>
-                <div class="ui basic button quantidade" data-product="Cappuccino" data-price="12.82">0
-                </div>
-                <div class="ui icon button basic adicionar-remover-item" data-item="add">
-                  <i class="add icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ui card fluid">
-            <div class="blurring dimmable image">
-              <div class="ui dimmer">
-                <div class="content">
-                  <div class="center">
-                    <div class="ui inverted button">Descrição do Moccacino</div>
-                  </div>
-                </div>
-              </div>
-              <div class="ui top brown attached label">Moccacino</div>
-              <div class="ui green bottom right attached label">R$ 9,21</div>
-              <img src="img/coffee/moccacino.jpg">
-            </div>
-            <div class="extra content">
-              <div class="ui three buttons">
-                <div class="ui icon button basic adicionar-remover-item" data-item="del">
-                  <i class="minus icon"></i>
-                </div>
-                <div class="ui basic button quantidade" data-product="Moccacino" data-price="9.21">0
-                </div>
-                <div class="ui icon button basic adicionar-remover-item" data-item="add">
-                  <i class="add icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ui card fluid">
-            <div class="blurring dimmable image">
-              <div class="ui dimmer">
-                <div class="content">
-                  <div class="center">
-                    <div class="ui inverted button">Descrição do Cold Brew Coffee</div>
-                  </div>
-                </div>
-              </div>
-              <div class="ui top brown attached label">Cold Brew Coffee</div>
-              <div class="ui green bottom right attached label">R$ 13,39</div>
-              <img src="img/coffee/cold-brew-coffee.jpg">
-            </div>
-            <div class="extra content">
-              <div class="ui three buttons">
-                <div class="ui icon button basic adicionar-remover-item" data-item="del">
-                  <i class="minus icon"></i>
-                </div>
-                <div class="ui basic button quantidade" data-product="Cold Brew Coffee" data-price="13.39">0
-                </div>
-                <div class="ui icon button basic adicionar-remover-item" data-item="add">
-                  <i class="add icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Pop-up para a bebida cold-brew-coffe -->
-          <div class="ui card">
-            <!-- Imagem da bebida -->
-            <div class="image">
-              <img src="img/coffee/cold-brew-coffee.jpg">
-              <!-- Coloca o preço da bebida no canto direta da esqueda em baixo da imagem -->
-              <div class="ui green bottom right attached label">
-                R$ 13,39
-              </div>
-            </div>
-            <div class="content">
-              <!-- Coloca o nome produto em baixo da imagem -->
-              <div class="header">
-                Cold Brew Coffee
-              </div>
-              <!-- Descrição da bedida -->
-              <div class="description">
-                O Cold Brew é um método de preparo de extração do café a frio. Em outras palavras, é uma mistura de café
-                com água fria, que é filtrada após uma infusão de, no mínimo, 12 horas.
-              </div>
-            </div>
-            <!-- Coloca os botôes de edit e delete -->
-            <div class="ui two bottom attached buttons">
-              <!-- Botão delete -->
-              <div class="ui inverted red button">
-                <i class="trash alternate outline icon"></i>
-                Delete
-              </div>
-              <!-- Botão edit -->
-              <div class="ui inverted green button">
-                <i class="edit outline icon"></i>
-                Edit
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>
-    </div>
   </main>
+
   <!-- Formulário para Cadastro do Produto -->
   <div class="ui modal" id="form-addProduct">
     <i class="close icon"></i>
@@ -284,9 +145,9 @@
               <option value="1">
                 Bolo
               </option>
-              <!-- Categoria 2 - Bebidas -->
+              <!-- Categoria 2 - Cafés -->
               <option value="2">
-                Bebidas
+                Cafés
               </option>
             </select>
           </div>
@@ -332,8 +193,7 @@
         <div class="field">
           <!-- Campo do Nome do produto -->
           <label>idProduto:</label>
-          <input type="number" name="id-produto" pattern="\d*" placeholder=""
-            id="upID-produto" disabled>
+          <input type="number" name="id-produto" pattern="\d*" placeholder="" id="upID-produto" disabled>
           <!-- Campo do Nome do produto -->
           <label>Nome:</label>
           <input type="text" name="nome-produto" pattern="\d*" placeholder="Digite o nome do produto"
@@ -368,9 +228,9 @@
                 <i class="icon icon birthday cake"></i>
                 Bolo
               </option>
-              <!-- Categoria 2 - Bebidas -->
+              <!-- Categoria 2 - Cafés -->
               <option value="2">
-                Bebidas
+                Cafés
               </option>
             </select>
           </div>
