@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     const MENU_BOLOS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=1';
 
-    const MENU_BEBIDAS = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=2';
+    const MENU_CAFES = 'https://cipaon.com.br/api/produto.php?token=3e27138784ce6fa7dcc5c67971117739b2fadfc7&idCategoria=2';
 
     const ADD_PEDIDO = 'https://cipaon.com.br/api/produto.php';
 
@@ -30,6 +30,8 @@ $(document).ready(function () {
         order();
         // Chama a função dropDown
         dropdown();
+        // Chama a função que faz o SearchBox funcionar
+        searchBox();
         // Chama a função que desabilita o botão caso os campos estejam vazios
         verificarCamponsButton();
         // Chama a função de Adicionar Produtos
@@ -164,14 +166,14 @@ $(document).ready(function () {
         // Limpa o conteúdo atual do menu de bebidas
         $('#menu-all').empty();
 
-        let conteudoMenu = '';
+        var conteudoMenuAll = '';
 
         $.getJSON(MENU_ALL, function (response) {
             // Ordena o array de produtos por nome em ordem alfabética
             response.sort((a, b) => a.nome.localeCompare(b.nome));
 
             response.forEach((produto) => {
-                conteudoMenu += `
+                conteudoMenuAll += `
                     <div class="ui card" data-id="${produto.idProduto}" data-cat="${produto.idCategoria}">
                         <!-- Imagem do produto -->
                         <div class="image imagemProduto">
@@ -206,7 +208,7 @@ $(document).ready(function () {
                         </div>
                     </div>`;
             });
-            $('#menu-all').append(conteudoMenu);
+            $('#menu-all').append(conteudoMenuAll);
 
             // Chama a função de deletar Produto
             deleteProduto();
@@ -220,7 +222,7 @@ $(document).ready(function () {
         // Limpa o conteúdo atual do menu de bolos
         $('#menu-bolos').empty();
 
-        let conteudoMenu = '';
+        let conteudoMenuBolos = '';
 
         $.getJSON(MENU_BOLOS, function (response) {
             // Filtra apenas os produtos com idCategoria igual a 1
@@ -231,7 +233,7 @@ $(document).ready(function () {
 
             // Itera sobre cada produto de bolo
             produtosBolos.forEach((bolo) => {
-                conteudoMenu += `
+                conteudoMenuBolos += `
                     <div class="ui card" data-id="${bolo.idProduto}" data-cat="${bolo.idCategoria}">
                         <!-- Imagem do bolo -->
                         <div class="image imagemProduto">
@@ -266,7 +268,7 @@ $(document).ready(function () {
                         </div>
                     </div>`;
             });
-            $('#menu-bolos').append(conteudoMenu);
+            $('#menu-bolos').append(conteudoMenuBolos);
 
             // Chama a função de deletar Produto
             deleteProduto();
@@ -322,7 +324,7 @@ $(document).ready(function () {
 
         let conteudoMenu = '';
 
-        $.getJSON(MENU_BOLOS, function (response) {
+        $.getJSON(MENU_CAFES, function (response) {
             // Filtra apenas os produtos com idCategoria igual a 2
             const produtosCafes = response.filter(cafe => cafe.idCategoria === "2");
 
@@ -379,9 +381,59 @@ $(document).ready(function () {
 
     // Função para o funcionamento do botão DropDown
     function dropdown() {
-        $('.ui.dropdown')
-            .dropdown();
+        $('.ui.dropdown').dropdown();
     };
+
+    function searchBox() {
+        let produtos = [];
+    
+        // $('#clear-search').on('click', function() {
+        //     // Faça o que for necessário para contabilizar o clique aqui
+        //     console.log('Ícone clear-search clicado!');
+        // });
+
+        $('.prompt').on('input', function() {
+            // Verifica se há texto no campo de entrada
+            if ($(this).val().trim() !== '') {
+                // Se houver texto, muda o ícone da lupa para um ícone de limpar
+                $('.search.icon').removeClass('search').addClass('close');
+            } else {
+                // Se não houver texto, muda o ícone de volta para a lupa
+                $('.search.icon').removeClass('close').addClass('search');
+            }
+        });
+
+        $('.close.search').on('click', function() {
+            console.log("");
+        });
+
+        $.getJSON(MENU_ALL, function (response) {
+            // Preenche o array produtos com os nomes dos produtos
+            response.forEach((produto) => {
+                produtos.push({ title: produto.nome });
+            });
+    
+            // Inicializa a busca com a fonte de dados correta
+            $('.ui.search').search({
+                source: produtos,
+                // Função para executar quando a pesquisa é concluída
+                onSelect(result, response) {
+                    // Oculta todos os cards
+                    $('.ui.card').hide();
+                    // Mostra apenas os cards que correspondem ao resultado da pesquisa
+                    $(`.ui.card:contains('${result.title}')`).show();
+                },
+                // Função para executar quando a pesquisa é limpa
+                onSearchQueryClear() {
+                    // Mostra todos os cards quando a pesquisa é limpa
+                    $('.ui.card').show();
+                    // Reinicia a pesquisa para que todos os resultados sejam exibidos novamente
+                    $('.ui.search').search('query', '');
+                }
+            });
+        });
+    }
+    
 
     //Função para Desabilitar/Habilitar o botão "Adicionar Produto"
     function verificarCamponsButton() {
@@ -451,7 +503,7 @@ $(document).ready(function () {
             let urlVazio = $("#imagem-produto").val();
 
             if (!urlVazio) {
-                $('#imagem-produto').val('https://www.malhariapradense.com.br/wp-content/uploads/2017/08/produto-sem-imagem.png')
+                $('#imagem-produto').val('https://www.quitandadelivery.com/images/geral/sem_foto_big.jpg')
             }
 
             console.log("---------------------------------------------------------");
@@ -542,7 +594,7 @@ $(document).ready(function () {
             $('#upImagem-produto').val(imagemProduto);
         });
 
-        $('#button-edit').click(function () {
+        $('#button-edit').off().on('click', function () {
             const cardSelect = $(this).closest(".card");
             const produtoId = cardSelect.data("id");
             console.log("Edit pressionado");
