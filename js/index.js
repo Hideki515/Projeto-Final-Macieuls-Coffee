@@ -387,12 +387,39 @@ $(document).ready(function () {
     function searchBox() {
         let produtos = [];
     
-        // $('#clear-search').on('click', function() {
-        //     // Faça o que for necessário para contabilizar o clique aqui
-        //     console.log('Ícone clear-search clicado!');
-        // });
-
-        $('.prompt').on('input', function() {
+        // Manipulador de eventos para o botão clear-search
+        $('#clear-search').on('click', function () {
+            // Limpar o valor do campo de pesquisa
+            $('#box-shearch').val('');
+    
+            // Exibir todos os produtos novamente
+            $('.ui.card').show();
+    
+            console.log("Clear field");
+        });
+    
+        // Verifica se ocorreu digitação no campo de pesquisa
+        $('#box-shearch').on('input', function () {
+            // Obtém o termo de pesquisa atual
+            let searchTerm = $(this).val().trim().toLowerCase();
+    
+            console.log("Digitado:", searchTerm);
+    
+            // Percorre todos os cards de produtos
+            $('.ui.card').each(function () {
+                // Obtém o texto do card
+                let cardText = $(this).text().toLowerCase();
+    
+                // Verifica se o texto do card contém o termo de pesquisa
+                if (cardText.includes(searchTerm)) {
+                    // Se sim, mostra o card
+                    $(this).show();
+                } else {
+                    // Se não, oculta o card
+                    $(this).hide();
+                }
+            });
+    
             // Verifica se há texto no campo de entrada
             if ($(this).val().trim() !== '') {
                 // Se houver texto, muda o ícone da lupa para um ícone de limpar
@@ -402,11 +429,7 @@ $(document).ready(function () {
                 $('.search.icon').removeClass('close').addClass('search');
             }
         });
-
-        $('.close.search').on('click', function() {
-            console.log("");
-        });
-
+    
         $.getJSON(MENU_ALL, function (response) {
             // Preenche o array produtos com os nomes dos produtos
             response.forEach((produto) => {
@@ -415,13 +438,15 @@ $(document).ready(function () {
     
             // Inicializa a busca com a fonte de dados correta
             $('.ui.search').search({
-                source: produtos,
+                // source: produtos,
                 // Função para executar quando a pesquisa é concluída
                 onSelect(result, response) {
                     // Oculta todos os cards
                     $('.ui.card').hide();
                     // Mostra apenas os cards que correspondem ao resultado da pesquisa
                     $(`.ui.card:contains('${result.title}')`).show();
+    
+                    console.log("Tem resultado");
                 },
                 // Função para executar quando a pesquisa é limpa
                 onSearchQueryClear() {
@@ -429,6 +454,14 @@ $(document).ready(function () {
                     $('.ui.card').show();
                     // Reinicia a pesquisa para que todos os resultados sejam exibidos novamente
                     $('.ui.search').search('query', '');
+                    console.log("Limpou o campo de pesquisa");
+    
+                },
+                // Função para executar quando a entrada de pesquisa é vazia
+                onSearchQueryEmpty() {
+                    // Mostra todos os cards quando a entrada de pesquisa é vazia
+                    $('.ui.card').show();
+                    console.log("Limpou o campo de pesquisa");
                 }
             });
         });
@@ -605,6 +638,12 @@ $(document).ready(function () {
             console.log($('#upImagem-produto').val());
             console.log($('#upPreco-produto').val());
             console.log($('#upDescricao-produto').val());
+
+            let urlVazio = $("#upImagem-produto").val();
+
+            if (!urlVazio) {
+                $('#upImagem-produto').val('https://www.quitandadelivery.com/images/geral/sem_foto_big.jpg')
+            }
 
             let produto = {
                 nome: $('#upNome-produto').val(),

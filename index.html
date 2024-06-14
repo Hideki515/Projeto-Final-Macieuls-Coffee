@@ -22,30 +22,32 @@
   <header>
     <div class="ui grid container" id="menu">
       <div class="twelve wide column">
+
         <!-- Botão para mostrar todos os Produtos -->
         <button class="ui brown button menu-item" data-tab-name="tab-all">
           <i class="icon boxes large"></i><br />
           Todos
         </button>
+
         <!-- Botão para mostrar os bolos -->
         <button class="ui brown button menu-item" data-tab-name="tab-bolos">
           <i class="icon birthday cake large"></i><br />
           Bolos
         </button>
+        
         <!-- Botão para mostrar os cafés -->
         <button class="ui brown button menu-item" data-tab-name="tab-cafes">
           <i class="icon coffee large"></i><br />
           Cafés
         </button>
       </div>
-      <!-- DropDown para o menu do CRUD -->
 
-
+      <!-- Campo de pesquisa -->
       <div class="four wide column right">
-        <div class="ui search">
+        <div class="ui search" id="pesquisar-produtos">
           <div class="ui icon input">
-            <input class="prompt" type="text" placeholder="Procurar produtos...">
-            <i class="search icon" id="clear-search"></i>
+            <input class="prompt" type="text" placeholder="Procurar produtos..." id="box-shearch">
+            <i class="search icon button" id="clear-search"></i>
           </div>
           <div class="results"></div>
         </div>
