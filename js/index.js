@@ -179,7 +179,7 @@ $(document).ready(function () {
                         <div class="image imagemProduto">
                             <img src="${produto.foto}">
                             <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
-                            <div class="ui green bottom right attached label precoProduto">
+                            <div class="ui green basic bottom right attached label precoProduto">
                                 R$ ${(produto.preco)}
                             </div>
                         </div>
@@ -239,7 +239,7 @@ $(document).ready(function () {
                         <div class="image imagemProduto">
                             <img src="${bolo.foto}">
                             <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
-                            <div class="ui green bottom right attached label precoProduto">
+                            <div class="ui green basic bottom right attached label precoProduto">
                                 R$ ${(bolo.preco)}
                             </div>
                         </div>
@@ -276,46 +276,6 @@ $(document).ready(function () {
             // Chama a função de editar Produto
             editProduto();
         });
-
-        // $.ajax({
-        //     url: MENU_BOLOS,
-        //     method: 'GET',
-        //     dataType: 'json',
-        //     success: function (response) {
-        //         response.forEach((item) => {
-        //             conteudoMenu += `<div class="ui card fluid">
-        //                                 <div class="ui top brown attached label">${item.nome}</div>
-        //                                 <div class="blurring dimmable image">
-        //                                     <div class="ui dimmer">
-        //                                         <div class="content">
-        //                                             <div class="center">
-        //                                                 <div class="ui inverted button">${item.descricao}</div>
-        //                                             </div>
-        //                                         </div>
-        //                                     </div>
-        //                                     <div class="ui green bottom right attached label">${item.preco}</div>
-        //                                     <img src="${item.foto}">
-        //                                 </div>
-        //                                 <div class="extra content">
-        //                                     <div class="ui three buttons">
-        //                                         <div class="ui icon button basic adicionar-remover-item" data-item="del">
-        //                                             <i class="minus icon"></i>
-        //                                         </div>
-        //                                         <div class="ui basic button quantidade">0
-        //                                         </div>
-        //                                         <div class="ui icon button basic adicionar-remover-item" data-item="add">
-        //                                             <i class="add icon"></i>
-        //                                         </div>
-        //                                     </div>
-        //                                 </div>
-        //                             </div>`;
-        //         });
-        //         $('#menu-bolos').append(conteudoMenu);
-        //     },
-        //     error: function (error) {
-        //         console.log(error);
-        //     }
-        // });
     }
 
     function carregaMenuCafes() {
@@ -339,7 +299,7 @@ $(document).ready(function () {
                         <div class="image imagemProduto">
                             <img src="${cafe.foto}">
                             <!-- Coloca o preço no canto direta da esqueda em baixo da imagem -->
-                            <div class="ui green bottom right attached label precoProduto">
+                            <div class="ui green basic bottom right attached label precoProduto">
                                 R$ ${(cafe.preco)}
                             </div>
                         </div>
@@ -403,8 +363,6 @@ $(document).ready(function () {
             // Obtém o termo de pesquisa atual
             let searchTerm = $(this).val().trim().toLowerCase();
 
-            console.log("Digitado:", searchTerm);
-
             // Percorre todos os cards de produtos
             $('.ui.card').each(function () {
                 // Obtém o texto do card
@@ -438,7 +396,6 @@ $(document).ready(function () {
 
             // Inicializa a busca com a fonte de dados correta
             $('#search-product').search({
-                // source: produtos,
                 // Função para executar quando a pesquisa é concluída
                 onSelect(result, response) {
                     // Oculta todos os cards
@@ -488,7 +445,6 @@ $(document).ready(function () {
             let nome_produto = $("#nome-produto").val();
             let descricao_produto = $("#descricao-produto").val();
             let preco_produto = $("#preco-produto").val();
-            // let categoria_produto = $('.ui.dropdown').dropdown('get value');
 
             let categoria_selecionada = $("#categoria-produto").val();
 
@@ -504,7 +460,8 @@ $(document).ready(function () {
 
     // Função para Mascara do campo preço
     function maskPrice() {
-        $('#preco-produto').mask('000,00', { reverse: true });
+        $('#preco-produto').mask('000,00', { reverse: true, placeholder: "000,00" });
+        $('#upPreco-produto').mask('000,00', { reverse: true });
     };
 
     // Função para Adicionar Produto
@@ -514,25 +471,6 @@ $(document).ready(function () {
         });
 
         $("#btn-adicionar").click(function () {
-            // let categoria_produto;
-            // let descricao_produto;
-
-            // let categoria_selecionada = $('.ui.dropdown').dropdown('get text')[1].trim();
-
-            // Mapeamento do texto da categoria para o ID da categoria
-            // if (categoria_selecionada === "Bolos") {
-            //     categoria_produto = "1";
-            // } else if (categoria_selecionada === "Bebidas") {
-            //     categoria_produto = "2";
-            // } else {
-            //     console.log("Categoria não reconhecida."); // Tratar outros casos conforme necessário
-            //     return;
-            // }
-
-            // console.log("Categoria selecionada:", categoria_selecionada);
-
-            // console.log("ID da categoria selecionada", categoria_produto);
-
             let urlVazio = $("#imagem-produto").val();
 
             if (!urlVazio) {
@@ -605,19 +543,14 @@ $(document).ready(function () {
             const cardSelect = $(this).closest(".card");
             const produtoId = cardSelect.data("id");
             const categoriaId = cardSelect.data("cat");
-            console.log(produtoId)
-            // Selecionando os campos correspondentes dentro do card
+
             const nomeProduto = cardSelect.find('.nomeProduto').text().trim();
             const descricaoProduto = cardSelect.find('.descricaoProduto').text().trim();
             const precoProduto = parseFloat(cardSelect.find('.precoProduto').text().trim().replace('R$ ', '').replace(',', '.'));
             const idCategoriaProduto = cardSelect.data('cat');
             const imagemProduto = cardSelect.find('.imagemProduto img').attr('src');
 
-            console.log(categoriaId);
-            console.log('-------------------------------');
-            console.log(idCategoriaProduto);
             // Preenchendo os campos do formulário de edição
-
             $('#upID-produto').val(produtoId);
             $('#upNome-produto').val(nomeProduto);
             $('#upDescricao-produto').val(descricaoProduto);
@@ -630,14 +563,6 @@ $(document).ready(function () {
         $('#button-edit').off().on('click', function () {
             const cardSelect = $(this).closest(".card");
             const produtoId = cardSelect.data("id");
-            console.log("Edit pressionado");
-            console.log(produtoId);
-
-            console.log($('#upNome-produto').val());
-            console.log($('#upCategoria-produto').val());
-            console.log($('#upImagem-produto').val());
-            console.log($('#upPreco-produto').val());
-            console.log($('#upDescricao-produto').val());
 
             let urlVazio = $("#upImagem-produto").val();
 
@@ -692,7 +617,6 @@ $(document).ready(function () {
             });
         });
     }
-
 
     // Função para deletar Produto
     function deleteProduto() {
