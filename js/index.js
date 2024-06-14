@@ -386,30 +386,30 @@ $(document).ready(function () {
 
     function searchBox() {
         let produtos = [];
-    
+
         // Manipulador de eventos para o botão clear-search
         $('#clear-search').on('click', function () {
             // Limpar o valor do campo de pesquisa
             $('#box-shearch').val('');
-    
+
             // Exibir todos os produtos novamente
             $('.ui.card').show();
-    
+
             console.log("Clear field");
         });
-    
+
         // Verifica se ocorreu digitação no campo de pesquisa
         $('#box-shearch').on('input', function () {
             // Obtém o termo de pesquisa atual
             let searchTerm = $(this).val().trim().toLowerCase();
-    
+
             console.log("Digitado:", searchTerm);
-    
+
             // Percorre todos os cards de produtos
             $('.ui.card').each(function () {
                 // Obtém o texto do card
                 let cardText = $(this).text().toLowerCase();
-    
+
                 // Verifica se o texto do card contém o termo de pesquisa
                 if (cardText.includes(searchTerm)) {
                     // Se sim, mostra o card
@@ -419,25 +419,25 @@ $(document).ready(function () {
                     $(this).hide();
                 }
             });
-    
+
             // Verifica se há texto no campo de entrada
             if ($(this).val().trim() !== '') {
                 // Se houver texto, muda o ícone da lupa para um ícone de limpar
-                $('.search.icon').removeClass('search').addClass('close');
+                $('#clear-search').removeClass('search disabled').addClass('close');
             } else {
                 // Se não houver texto, muda o ícone de volta para a lupa
-                $('.search.icon').removeClass('close').addClass('search');
+                $('#clear-search').removeClass('close').addClass('search disabled');
             }
         });
-    
+
         $.getJSON(MENU_ALL, function (response) {
             // Preenche o array produtos com os nomes dos produtos
             response.forEach((produto) => {
                 produtos.push({ title: produto.nome });
             });
-    
+
             // Inicializa a busca com a fonte de dados correta
-            $('.ui.search').search({
+            $('#search-product').search({
                 // source: produtos,
                 // Função para executar quando a pesquisa é concluída
                 onSelect(result, response) {
@@ -445,7 +445,7 @@ $(document).ready(function () {
                     $('.ui.card').hide();
                     // Mostra apenas os cards que correspondem ao resultado da pesquisa
                     $(`.ui.card:contains('${result.title}')`).show();
-    
+
                     console.log("Tem resultado");
                 },
                 // Função para executar quando a pesquisa é limpa
@@ -453,9 +453,9 @@ $(document).ready(function () {
                     // Mostra todos os cards quando a pesquisa é limpa
                     $('.ui.card').show();
                     // Reinicia a pesquisa para que todos os resultados sejam exibidos novamente
-                    $('.ui.search').search('query', '');
+                    $('search-product').search('query', '');
                     console.log("Limpou o campo de pesquisa");
-    
+
                 },
                 // Função para executar quando a entrada de pesquisa é vazia
                 onSearchQueryEmpty() {
@@ -466,7 +466,7 @@ $(document).ready(function () {
             });
         });
     }
-    
+
 
     //Função para Desabilitar/Habilitar o botão "Adicionar Produto"
     function verificarCamponsButton() {
