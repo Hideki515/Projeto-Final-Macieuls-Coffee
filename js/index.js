@@ -381,47 +381,14 @@ $(document).ready(function () {
             // Verifica se há texto no campo de entrada
             if ($(this).val().trim() !== '') {
                 // Se houver texto, muda o ícone da lupa para um ícone de limpar
-                $('#clear-search').removeClass('search disabled').addClass('close');
+                $('#clear-search').removeClass('search').addClass('close');
             } else {
                 // Se não houver texto, muda o ícone de volta para a lupa
-                $('#clear-search').removeClass('close').addClass('search disabled');
+                $('#clear-search').removeClass('close').addClass('search link');
             }
         });
 
-        $.getJSON(MENU_ALL, function (response) {
-            // Preenche o array produtos com os nomes dos produtos
-            response.forEach((produto) => {
-                produtos.push({ title: produto.nome });
-            });
-
-            // Inicializa a busca com a fonte de dados correta
-            $('#search-product').search({
-                // Função para executar quando a pesquisa é concluída
-                onSelect(result, response) {
-                    // Oculta todos os cards
-                    $('.ui.card').hide();
-                    // Mostra apenas os cards que correspondem ao resultado da pesquisa
-                    $(`.ui.card:contains('${result.title}')`).show();
-
-                    console.log("Tem resultado");
-                },
-                // Função para executar quando a pesquisa é limpa
-                onSearchQueryClear() {
-                    // Mostra todos os cards quando a pesquisa é limpa
-                    $('.ui.card').show();
-                    // Reinicia a pesquisa para que todos os resultados sejam exibidos novamente
-                    $('search-product').search('query', '');
-                    console.log("Limpou o campo de pesquisa");
-
-                },
-                // Função para executar quando a entrada de pesquisa é vazia
-                onSearchQueryEmpty() {
-                    // Mostra todos os cards quando a entrada de pesquisa é vazia
-                    $('.ui.card').show();
-                    console.log("Limpou o campo de pesquisa");
-                }
-            });
-        });
+        
     }
 
 
