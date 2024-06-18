@@ -20,14 +20,12 @@ $(document).ready(function () {
     // Chama as funções necessárias para o funcionamento do programa
     function init() {
         componentInit();
+        // Chama a função que carrega todo o Menu
         carregaMenuAll();
+        // Chama a função que carrega o Menu de Bolos
         carregaMenuBolos();
+        // Chama a função que carrega o Menu de Cafés
         carregaMenuCafes();
-        addRemoveItem();
-        limparPedido();
-        limparPedidoBtn();
-        // checkOrder();
-        order();
         // Chama a função dropDown
         dropdown();
         // Chama a função que faz o SearchBox funcionar
@@ -48,118 +46,6 @@ $(document).ready(function () {
             $.tab('change tab', abaAtiva);
         });
         $('.special.cards .image').dimmer({ on: 'click' });
-    }
-
-    function us2brl(valor) {
-        return Number(valor).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
-    }
-
-    function checkOrder() {
-        $('#btn-confirmar').click(function () {
-            $('#resumo-pedido').empty();
-            $('.ui.modal').modal('show');
-            let arrQuantidade = $('.quantidade');
-            let nomeProduto;
-            let valorUnitario;
-            let valorTotal;
-            let valorTotalPedido = 0;
-            let conteudoResumo = '';
-            let obj;
-
-            // $('.quantidade').each(function(){
-            //     console.log('--->', $(this).text());
-            // });
-
-            $.each(arrQuantidade, function (index, value) {
-                quantidade = $(this).text();
-                if (quantidade > 0) {
-                    obj = {};
-                    nomeProduto = $(this).attr('data-name');
-                    valorUnitario = $(this).attr('data-price');
-                    valorTotal = parseInt(quantidade) * valorUnitario;
-                    valorTotalPedido += valorTotal;
-
-                    // {nome: 'Ameixa', quantidade: '2'}
-                    obj.nome = nomeProduto;
-                    obj.quantidade = quantidade;
-                    arrPedido.push(obj);
-
-                    conteudoResumo += ` <tr>
-                                            <td class="collapsing">${nomeProduto}</td>
-                                            <td class="collapsing ui center aligned">${quantidade}</td>
-                                            <td class="collapsing right">${us2brl(valorTotal)}</td>
-                                        </tr>`;
-                }
-            });
-
-            $('#resumo-pedido').append(conteudoResumo);
-            $('#valor-total').text(us2brl(valorTotalPedido));
-
-        });
-    }
-
-    function order() {
-        $('#btn-realizar-pedido').click(function () {
-            $.ajax({
-                url: ADD_PEDIDO,
-                method: 'POST',
-                data: {
-                    token: 'FE1508',
-                    mesa: $('#numero-mesa').val(),
-                    total: $('#valor-total').text(),
-                    pedido: JSON.stringify(arrPedido)
-                },
-                success: function (a, b, c) {
-
-                    if (c.status === 201) {
-                        limparPedido();
-                        $('.ui.modal').modal('hide');
-                        Swal.fire({
-                            title: "Uhulll",
-                            text: "Pedido realizado com sucesso!",
-                            timer: 3000,
-                            icon: "success",
-                            showConfirmButton: false,
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Erro!",
-                            text: "Faça o pedido novamente!",
-                            timer: 3000,
-                            icon: "error",
-                            showConfirmButton: false,
-                        });
-                    }
-                },
-                error: function (error) {
-                    console.error('Erro:', error);
-                }
-            });
-        });
-    }
-
-    function addRemoveItem() {
-        $('#menu-bolos').on('click', '.adicionar-remover-item', function () {
-            let $element = $(this).parent().find('.quantidade');
-            let operacao = $(this).attr('data-item');
-            let quantidade = operacao === 'del' ? parseInt($element.text()) - 1 : parseInt($element.text()) + 1;
-            quantidade = quantidade < 0 ? 0 : quantidade;
-            $element.text(quantidade);
-        });
-    }
-
-    function limparPedido() {
-        $('.quantidade').text('0');
-        $('#numero-mesa').val('');
-    }
-
-    function limparPedidoBtn() {
-        $('#btn-limpar-pedido').click(function () {
-            limparPedido();
-        });
     }
 
     function carregaMenuAll() {
@@ -338,7 +224,6 @@ $(document).ready(function () {
         });
     }
 
-
     // Função para o funcionamento do botão DropDown
     function dropdown() {
         $('.ui.dropdown').dropdown();
@@ -347,7 +232,7 @@ $(document).ready(function () {
     function searchBox() {
         let produtos = [];
 
-        // Manipulador de eventos para o botão clear-search
+        // Limpa o campo de pesquisa
         $('#clear-search').on('click', function () {
             // Limpar o valor do campo de pesquisa
             $('#box-shearch').val('');
@@ -381,16 +266,13 @@ $(document).ready(function () {
             // Verifica se há texto no campo de entrada
             if ($(this).val().trim() !== '') {
                 // Se houver texto, muda o ícone da lupa para um ícone de limpar
-                $('#clear-search').removeClass('search').addClass('close');
+                $('#clear-search').removeClass('search disabled').addClass('close');
             } else {
                 // Se não houver texto, muda o ícone de volta para a lupa
-                $('#clear-search').removeClass('close').addClass('search link');
+                $('#clear-search').removeClass('close').addClass('search disabled');
             }
         });
-
-        
     }
-
 
     //Função para Desabilitar/Habilitar o botão "Adicionar Produto"
     function verificarCamponsButton() {
