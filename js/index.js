@@ -57,6 +57,111 @@ $(document).ready(function () {
         });
     }
 
+    function checkOrder() {
+        $('#btn-confirmar').click(function () {
+            $('#resumo-pedido').empty();
+            $('.ui.modal').modal('show');
+            let arrQuantidade = $('.quantidade');
+            let nomeProduto;
+            let valorUnitario;
+            let valorTotal;
+            let valorTotalPedido = 0;
+            let conteudoResumo = '';
+            let obj;
+
+            // $('.quantidade').each(function(){
+            //     console.log('--->', $(this).text());
+            // });
+
+            $.each(arrQuantidade, function (index, value) {
+                quantidade = $(this).text();
+                if (quantidade > 0) {
+                    obj = {};
+                    nomeProduto = $(this).attr('data-name');
+                    valorUnitario = $(this).attr('data-price');
+                    valorTotal = parseInt(quantidade) * valorUnitario;
+                    valorTotalPedido += valorTotal;
+
+                    // {nome: 'Ameixa', quantidade: '2'}
+                    obj.nome = nomeProduto;
+                    obj.quantidade = quantidade;
+                    arrPedido.push(obj);
+
+                    conteudoResumo += ` <tr>
+                                            <td class="collapsing">${nomeProduto}</td>
+                                            <td class="collapsing ui center aligned">${quantidade}</td>
+                                            <td class="collapsing right">${us2brl(valorTotal)}</td>
+                                        </tr>`;
+                }
+            });
+
+            $('#resumo-pedido').append(conteudoResumo);
+            $('#valor-total').text(us2brl(valorTotalPedido));
+
+        });
+    }
+
+    function order() {
+        $('#btn-realizar-pedido').click(function () {
+            $.ajax({
+                url: ADD_PEDIDO,
+                method: 'POST',
+                data: {
+                    token: 'FE1508',
+                    mesa: $('#numero-mesa').val(),
+                    total: $('#valor-total').text(),
+                    pedido: JSON.stringify(arrPedido)
+                },
+                success: function (a, b, c) {
+
+                    if (c.status === 201) {
+                        limparPedido();
+                        $('.ui.modal').modal('hide');
+                        Swal.fire({
+                            title: "Uhulll",
+                            text: "Pedido realizado com sucesso!",
+                            timer: 3000,
+                            icon: "success",
+                            showConfirmButton: false,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Erro!",
+                            text: "Faça o pedido novamente!",
+                            timer: 3000,
+                            icon: "error",
+                            showConfirmButton: false,
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error('Erro:', error);
+                }
+            });
+        });
+    }
+
+    function addRemoveItem() {
+        $('#menu-bolos').on('click', '.adicionar-remover-item', function () {
+            let $element = $(this).parent().find('.quantidade');
+            let operacao = $(this).attr('data-item');
+            let quantidade = operacao === 'del' ? parseInt($element.text()) - 1 : parseInt($element.text()) + 1;
+            quantidade = quantidade < 0 ? 0 : quantidade;
+            $element.text(quantidade);
+        });
+    }
+
+    function limparPedido() {
+        $('.quantidade').text('0');
+        $('#numero-mesa').val('');
+    }
+
+    function limparPedidoBtn() {
+        $('#btn-limpar-pedido').click(function () {
+            limparPedido();
+        });
+    }
+
     function carregaMenuAll() {
         // Limpa o conteúdo atual do menu de bebidas
         $('#menu-all').empty();
@@ -233,6 +338,7 @@ $(document).ready(function () {
         });
     }
 
+
     // Função para o funcionamento do botão DropDown
     function dropdown() {
         $('.ui.dropdown').dropdown();
@@ -281,7 +387,10 @@ $(document).ready(function () {
                 $('#clear-search').removeClass('close').addClass('search link');
             }
         });
+
+        
     }
+
 
     //Função para Desabilitar/Habilitar o botão "Adicionar Produto"
     function verificarCamponsButton() {
